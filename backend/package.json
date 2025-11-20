@@ -1,0 +1,17 @@
+{
+  "name": "zoologico",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3"
+  }
+}

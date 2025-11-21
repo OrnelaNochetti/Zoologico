@@ -5,7 +5,7 @@ const connection = mysql.createConnection({
   user: 'root',
   password: '',        // o la que uses
   database: 'zoologico',
-  port: 3307,          // ← este es el puerto correcto según tu my.ini
+  port: 3306,          // ← este es el puerto correcto según tu my.ini
   connectTimeout: 10000
 });
 

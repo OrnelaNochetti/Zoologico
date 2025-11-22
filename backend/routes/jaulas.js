@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jaulasController = require('../controllers/jaulascontroller');
+const jaulasController = require('../controllers/jaulasController');
 
 // CRUD Jaulas
 router.get('/', jaulasController.listar);

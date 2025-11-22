@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const cuidadoresController = require('../controllers/cuidadorescontroller');
+const cuidadoresController = require('../controllers/cuidadoresController');
 
 // CRUD Cuidadores
 router.get('/', cuidadoresController.listar);

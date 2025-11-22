@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const animalesController = require('../controllers/animalescontroller');
+const animalesController = require('../controllers/animalesController');
 
 // CRUD Animales
 router.get('/', animalesController.listar);

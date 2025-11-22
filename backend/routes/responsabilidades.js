@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const responsabilidadesController = require('../controllers/responsabilidadescontroller');
+const responsabilidadesController = require('../controllers/responsabilidadesController');
 
 // CRUD Responsabilidades
 router.get('/', responsabilidadesController.listar);

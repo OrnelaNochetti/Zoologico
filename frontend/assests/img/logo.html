@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Zoologico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .logo-text {
+            font-size: 2.5rem; 
+            line-height: 1.1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor principal de la tarjeta -->
+    <div class="flex flex-col items-center p-8 bg-white rounded-2xl shadow-xl">
+        
+        <!-- Contenedor de la Unidad de Logo Completa (Árboles + Círculo + Texto) -->
+        <div id="logo-unit" class="flex items-end justify-center space-x-6 mb-8 p-4">
+            
+            <!-- Árbol Izquierdo (Más realista) -->
+            <svg class="w-12 h-16 sm:w-16 sm:h-20" viewBox="0 0 50 80" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tronco (Marrón) -->
+                <rect x="22" y="60" width="6" height="20" fill="#6d4c41" rx="2" ry="2"/>
+                
+                <!-- Hojas - Capa Oscura (Base) -->
+                <path 
+                    d="M 25 5 C 10 20 10 40 25 45 C 40 40 40 20 25 5 Z" 
+                    fill="#1e582d" 
+                    transform="scale(1.1) translate(-2, 0)" 
+                />
+
+                <!-- Hojas - Capa Clara (Detalle) -->
+                <path 
+                    d="M 25 10 
+                       Q 15 25 25 40 
+                       Q 35 25 25 10 Z" 
+                    fill="#387e38" 
+                    stroke="#1e582d" 
+                    stroke-width="0.5"
+                />
+                
+                <!-- Hojas adicionales -->
+                <circle cx="15" cy="45" r="5" fill="#387e38"/>
+                <circle cx="35" cy="50" r="4" fill="#1e582d"/>
+            </svg>
+
+            <!-- Logo principal (Círculo + Texto) -->
+            <div id="zoo-logo-center" class="flex items-center space-x-4">
+                
+                <!-- SVG del Elefante (Círculo) -->
+                <svg viewBox="0 0 100 100" class="w-24 h-24" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Círculo de fondo verde -->
+                    <circle cx="50" cy="50" r="48" fill="#047857" class="shadow-lg"/>
+                    
+                    <!-- Dibujo del Elefante -->
+                    <g fill="#A9A9A9" stroke="#5A5A5A" stroke-width="1.5">
+                        
+                        <!-- Orejas -->
+                        <path d="M 68 35 C 85 40 85 65 65 65 Q 60 55 68 35 Z" fill="#A9A9A9" stroke-linejoin="round"/>
+                        <path d="M 32 35 C 15 40 15 65 35 65 Q 40 55 32 35 Z" fill="#A9A9A9" stroke-linejoin="round"/>
+                        
+                        <!-- Interior de Orejas -->
+                        <path d="M 69 40 C 78 45 78 60 66 60 Q 62 55 69 40 Z" fill="#DCDCDC"/>
+                        <path d="M 31 40 C 22 45 22 60 34 60 Q 38 55 31 40 Z" fill="#DCDCDC"/>
+
+                        <!-- Cabeza -->
+                        <path d="M 50 20 Q 35 25 38 40 L 62 40 Q 65 25 50 20 Z" fill="#808080"/>
+
+                        <!-- Ojos -->
+                        <circle cx="45" cy="35" r="2" fill="#374151"/>
+                        <circle cx="55" cy="35" r="2" fill="#374151"/>
+                        
+                        <!-- Trompa -->
+                        <path d="M 50 40 Q 55 45 50 65 Q 45 75 50 80" stroke="#808080" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+                        <!-- Colmillos -->
+                        <path d="M 45 45 L 42 55 Q 45 60 45 45 Z" fill="#FFFFFF" stroke="#DCDCDC" stroke-width="1"/>
+                        <path d="M 55 45 L 58 55 Q 55 60 55 45 Z" fill="#FFFFFF" stroke="#DCDCDC" stroke-width="1"/>
+                    </g>
+                </svg>
+                
+                <!-- Texto del Logo -->
+                <div class="flex flex-col">
+                    <span class="logo-text font-black text-green-700">ZOOLÓGICO</span>
+                    <span class="text-xl font-bold text-gray-500 tracking-wider -mt-2">Wildlife Oasis</span>
+                </div>
+            </div>
+
+            <!-- Árbol Derecho (Copia y ligeramente movido para variación) -->
+            <svg class="w-12 h-16 sm:w-16 sm:h-20" viewBox="0 0 50 80" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tronco (Marrón) -->
+                <rect x="22" y="60" width="6" height="20" fill="#6d4c41" rx="2" ry="2"/>
+                
+                <!-- Hojas - Capa Oscura (Base) -->
+                <path 
+                    d="M 25 5 C 10 20 10 40 25 45 C 40 40 40 20 25 5 Z" 
+                    fill="#1e582d" 
+                    transform="scale(1.1) translate(2, 5)" 
+                />
+
+                <!-- Hojas - Capa Clara (Detalle) -->
+                <path 
+                    d="M 25 10 
+                       Q 15 25 25 40 
+                       Q 35 25 25 10 Z" 
+                    fill="#387e38" 
+                    stroke="#1e582d" 
+                    stroke-width="0.5"
+                />
+                
+                <!-- Hojas adicionales -->
+                <circle cx="15" cy="55" r="5" fill="#387e38"/>
+                <circle cx="30" cy="50" r="4" fill="#1e582d"/>
+            </svg>
+
+        </div>
+
+        <p class="text-lg text-gray-600 max-w-md text-center">
+            Descubre, aprende y conecta con el mundo animal.
+        </p>
+    </div>
+
+</body>
+</html>

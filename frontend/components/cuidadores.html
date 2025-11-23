@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Cuidadores</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <h1>👷 Gestión de Cuidadores</h1>
+    <nav>
+      <ul>
+        <li><a href="animales.html">Animales</a></li>
+        <li><a href="jaulas.html">Jaulas</a></li>
+        <li><a href="cuidadores.html">Cuidadores</a></li>
+        <li><a href="responsabilidades.html">Responsabilidades</a></li>
+        <li><a href="../index.html">Inicio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Listado -->
+    <section>
+      <h2>Listado de Cuidadores</h2>
+      <ul id="lista-cuidadores"></ul>
+    </section>
+
+    <!-- Formulario -->
+    <section>
+      <h2>Agregar Cuidador</h2>
+      <form id="form-cuidador">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required>
+
+        <label>Edad:</label>
+        <input type="number" name="edad" required>
+
+        <label>Especialidad:</label>
+        <input type="text" name="especialidad" required>
+
+        <button type="submit">Agregar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+  </footer>
+
+  <script type="module">
+    import { getCuidadores, agregarCuidador } from '../utils/api.js';
+    import { mostrarMensaje } from '../app.js';
+
+    const lista = document.getElementById('lista-cuidadores');
+    const form = document.getElementById('form-cuidador');
+
+    // Listar cuidadores
+    async function cargarCuidadores() {
+      lista.innerHTML = '';
+      const cuidadores = await getCuidadores();
+      cuidadores.forEach(cuidador => {
+        const li = document.createElement('li');
+        li.textContent = `${cuidador.nombre} - ${cuidador.especialidad} (${cuidador.edad} años)`;
+        lista.appendChild(li);
+      });
+    }
+
+    // Agregar cuidador
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      await agregarCuidador(data);
+      mostrarMensaje('Cuidador agregado correctamente', 'success');
+      form.reset();
+      cargarCuidadores();
+    });
+
+    cargarCuidadores();
+  </script>
+</body>
+</html>

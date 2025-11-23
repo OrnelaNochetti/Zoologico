@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Cuidadores</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <h1>👨‍🌾 Gestión de Cuidadores</h1>
+    <nav>
+      <ul>
+        <li><a href="animales.html">Animales</a></li>
+        <li><a href="jaulas.html">Jaulas</a></li>
+        <li><a href="cuidadores.html">Cuidadores</a></li>
+        <li><a href="responsabilidades.html">Responsabilidades</a></li>
+        <li><a href="../index.html">Inicio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Listado -->
+    <section>
+      <h2>Listado de Cuidadores</h2>
+      <ul id="lista-cuidadores"></ul>
+    </section>
+
+    <!-- Formulario -->
+    <section>
+      <h2>Agregar / Editar Cuidador</h2>
+      <form id="form-cuidador">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required>
+
+        <label>Edad:</label>
+        <input type="number" name="edad" required>
+
+        <label>Experiencia (años):</label>
+        <input type="number" name="experiencia" required>
+
+        <button type="submit">Guardar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+  </footer>
+
+  <script type="module">
+    import { getCuidadores, agregarCuidador, eliminarCuidador, editarCuidador } from '../utils/api.js';
+    import { mostrarMensaje } from '../app.js';
+
+    const lista = document.getElementById('lista-cuidadores');
+    const form = document.getElementById('form-cuidador');
+
+    // Handler original para agregar cuidadores
+    const agregarHandler = async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      await agregarCuidador(data);
+      mostrarMensaje('Cuidador agregado correctamente', 'success');
+      form.reset();
+      cargarCuidadores();
+    };
+    form.addEventListener('submit', agregarHandler);
+
+    // Listar cuidadores con botones de eliminar y editar
+    async function cargarCuidadores() {
+      lista.innerHTML = '';
+      const cuidadores = await getCuidadores();
+      cuidadores.forEach(cuidador => {
+        const li = document.createElement('li');
+        li.textContent = `Cuidador #${cuidador.id_cuidador} - ${cuidador.nombre}, Edad: ${cuidador.edad}, Experiencia: ${cuidador.experiencia} años`;
+
+        // Botón eliminar
+        const btnEliminar = document.createElement('button');
+        btnEliminar.textContent = 'Eliminar';
+        btnEliminar.addEventListener('click', async () => {
+          await eliminarCuidador(cuidador.id_cuidador);
+          mostrarMensaje('Cuidador eliminado correctamente', 'success');
+          cargarCuidadores();
+        });
+
+        // Botón editar
+        const btnEditar = document.createElement('button');
+        btnEditar.textContent = 'Editar';
+        btnEditar.addEventListener('click', () => {
+          form.nombre.value = cuidador.nombre;
+          form.edad.value = cuidador.edad;
+          form.experiencia.value = cuidador.experiencia;
+
+          form.onsubmit = async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(form));
+            await editarCuidador(cuidador.id_cuidador, data);
+            mostrarMensaje('Cuidador editado correctamente', 'success');
+            form.reset();
+            cargarCuidadores();
+            form.onsubmit = agregarHandler;
+          };
+        });
+
+        li.appendChild(btnEliminar);
+        li.appendChild(btnEditar);
+        lista.appendChild(li);
+      });
+    }
+
+    cargarCuidadores();
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Jaulas</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <h1>🦴 Gestión de Jaulas</h1>
+    <nav>
+      <ul>
+        <li><a href="animales.html">Animales</a></li>
+        <li><a href="jaulas.html">Jaulas</a></li>
+        <li><a href="cuidadores.html">Cuidadores</a></li>
+        <li><a href="responsabilidades.html">Responsabilidades</a></li>
+        <li><a href="../index.html">Inicio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Listado -->
+    <section>
+      <h2>Listado de Jaulas</h2>
+      <ul id="lista-jaulas"></ul>
+    </section>
+
+    <!-- Formulario -->
+    <section>
+      <h2>Agregar / Editar Jaula</h2>
+      <form id="form-jaula">
+        <label>Ubicación:</label>
+        <input type="text" name="ubicacion" required>
+
+        <label>Tamaño (m²):</label>
+        <input type="number" name="tamano" required>
+
+        <label>Capacidad máxima:</label>
+        <input type="number" name="capacidad_maxima" required>
+
+        <button type="submit">Guardar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+  </footer>
+
+  <script type="module">
+    import { getJaulas, agregarJaula, eliminarJaula, editarJaula } from '../utils/api.js';
+    import { mostrarMensaje } from '../app.js';
+
+    const lista = document.getElementById('lista-jaulas');
+    const form = document.getElementById('form-jaula');
+
+    // Handler original para agregar jaulas
+    const agregarHandler = async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      await agregarJaula(data);
+      mostrarMensaje('Jaula agregada correctamente', 'success');
+      form.reset();
+      cargarJaulas();
+    };
+    form.addEventListener('submit', agregarHandler);
+
+    // Listar jaulas con botones de eliminar y editar
+    async function cargarJaulas() {
+      lista.innerHTML = '';
+      const jaulas = await getJaulas();
+      jaulas.forEach(jaula => {
+        const li = document.createElement('li');
+        li.textContent = `Jaula #${jaula.id_jaula} - Ubicación: ${jaula.ubicacion}, Tamaño: ${jaula.tamano} m², Capacidad: ${jaula.capacidad_maxima}`;
+
+        // Botón eliminar
+        const btnEliminar = document.createElement('button');
+        btnEliminar.textContent = 'Eliminar';
+        btnEliminar.addEventListener('click', async () => {
+          await eliminarJaula(jaula.id_jaula);
+          mostrarMensaje('Jaula eliminada correctamente', 'success');
+          cargarJaulas();
+        });
+
+        // Botón editar
+        const btnEditar = document.createElement('button');
+        btnEditar.textContent = 'Editar';
+        btnEditar.addEventListener('click', () => {
+          // Pre-cargar datos en el formulario
+          form.ubicacion.value = jaula.ubicacion;
+          form.tamano.value = jaula.tamano;
+          form.capacidad_maxima.value = jaula.capacidad_maxima;
+
+          // Cambiar comportamiento del submit para editar
+          form.onsubmit = async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(form));
+            await editarJaula(jaula.id_jaula, data);
+            mostrarMensaje('Jaula editada correctamente', 'success');
+            form.reset();
+            cargarJaulas();
+            // Restaurar comportamiento original
+            form.onsubmit = agregarHandler;
+          };
+        });
+
+        li.appendChild(btnEliminar);
+        li.appendChild(btnEditar);
+        lista.appendChild(li);
+      });
+    }
+
+    cargarJaulas();
+  </script>
+</body>
+</html>

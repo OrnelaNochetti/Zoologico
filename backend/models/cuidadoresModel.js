@@ -1,25 +1,43 @@
-const connection = require('../db');
+const db = require('../db');
 
-exports.listar = (callback) => {
-  connection.query('SELECT * FROM Cuidadores', callback);
+const cuidadoresModel = {
+  listar: (callback) => {
+    db.query('SELECT * FROM cuidadores', (err, results) => {
+      if (err) return callback(err);
+      callback(null, results);
+    });
+  },
+
+  agregar: (data, callback) => {
+    const { nombre, apellido, telefono, email } = data;
+    db.query(
+      'INSERT INTO cuidadores (nombre, apellido, telefono, email) VALUES (?, ?, ?, ?)',
+      [nombre, apellido, telefono, email],
+      (err, results) => {
+        if (err) return callback(err);
+        callback(null, results);
+      }
+    );
+  },
+
+  editar: (id, data, callback) => {
+    const { nombre, apellido, telefono, email } = data;
+    db.query(
+      'UPDATE cuidadores SET nombre=?, apellido=?, telefono=?, email=? WHERE id_cuidador=?',
+      [nombre, apellido, telefono, email, id],
+      (err) => {
+        if (err) return callback(err);
+        callback(null);
+      }
+    );
+  },
+
+  eliminar: (id, callback) => {
+    db.query('DELETE FROM cuidadores WHERE id_cuidador=?', [id], (err) => {
+      if (err) return callback(err);
+      callback(null);
+    });
+  }
 };
 
-exports.agregar = (data, callback) => {
-  connection.query(
-    'INSERT INTO Cuidadores (nombre, apellido, telefono, email) VALUES (?, ?, ?, ?)',
-    [data.nombre, data.apellido, data.telefono, data.email],
-    callback
-  );
-};
-
-exports.editar = (id, data, callback) => {
-  connection.query(
-    'UPDATE Cuidadores SET nombre=?, apellido=?, telefono=?, email=? WHERE id_cuidador=?',
-    [data.nombre, data.apellido, data.telefono, data.email, id],
-    callback
-  );
-};
-
-exports.eliminar = (id, callback) => {
-  connection.query('DELETE FROM Cuidadores WHERE id_cuidador=?', [id], callback);
-};
+module.exports = cuidadoresModel;

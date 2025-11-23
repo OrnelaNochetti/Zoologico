@@ -1,25 +1,43 @@
-const connection = require('../db');
+const db = require('../db');
 
-exports.listar = (callback) => {
-  connection.query('SELECT * FROM Jaulas', callback);
+const jaulasModel = {
+  listar: (callback) => {
+    db.query('SELECT * FROM jaulas', (err, results) => {
+      if (err) return callback(err);
+      callback(null, results);
+    });
+  },
+
+  agregar: (data, callback) => {
+    const { codigo, ubicacion, capacidad } = data;
+    db.query(
+      'INSERT INTO jaulas (codigo, ubicacion, capacidad) VALUES (?, ?, ?)',
+      [codigo, ubicacion, capacidad],
+      (err, results) => {
+        if (err) return callback(err);
+        callback(null, results);
+      }
+    );
+  },
+
+  editar: (id, data, callback) => {
+    const { codigo, ubicacion, capacidad } = data;
+    db.query(
+      'UPDATE jaulas SET codigo=?, ubicacion=?, capacidad=? WHERE id_jaula=?',
+      [codigo, ubicacion, capacidad, id],
+      (err) => {
+        if (err) return callback(err);
+        callback(null);
+      }
+    );
+  },
+
+  eliminar: (id, callback) => {
+    db.query('DELETE FROM jaulas WHERE id_jaula=?', [id], (err) => {
+      if (err) return callback(err);
+      callback(null);
+    });
+  }
 };
 
-exports.agregar = (data, callback) => {
-  connection.query(
-    'INSERT INTO Jaulas (codigo, ubicacion, capacidad) VALUES (?, ?, ?)',
-    [data.codigo, data.ubicacion, data.capacidad],
-    callback
-  );
-};
-
-exports.editar = (id, data, callback) => {
-  connection.query(
-    'UPDATE Jaulas SET codigo=?, ubicacion=?, capacidad=? WHERE id_jaula=?',
-    [data.codigo, data.ubicacion, data.capacidad, id],
-    callback
-  );
-};
-
-exports.eliminar = (id, callback) => {
-  connection.query('DELETE FROM Jaulas WHERE id_jaula=?', [id], callback);
-};
+module.exports = jaulasModel;

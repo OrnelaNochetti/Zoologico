@@ -1,109 +1,120 @@
-CREATE DATABASE IF NOT EXISTS zoologico;
-USE zoologico;
-
--- ============================
--- CREACIÓN DE TABLAS
--- ============================
-
--- Tabla de Jaulas
-CREATE TABLE Jaulas (
+-- ==================== JAULAS ====================
+CREATE TABLE jaulas (
   id_jaula INT AUTO_INCREMENT PRIMARY KEY,
-  codigo VARCHAR(50),
-  ubicacion VARCHAR(100),
-  capacidad INT
+  codigo VARCHAR(50) NOT NULL,
+  ubicacion VARCHAR(100) NOT NULL,
+  capacidad INT NOT NULL
 );
 
--- Tabla de Animales
-CREATE TABLE Animales (
-  id_animal INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(50),
-  especie VARCHAR(50),
-  edad INT,
-  alimentacion_diaria DECIMAL(10,2),
-  id_jaula INT,
-  FOREIGN KEY (id_jaula) REFERENCES Jaulas(id_jaula)
-);
-
--- Tabla de Cuidadores
-CREATE TABLE Cuidadores (
+-- ==================== CUIDADORES ====================
+CREATE TABLE cuidadores (
   id_cuidador INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(50),
-  apellido VARCHAR(50),
-  telefono VARCHAR(20),
+  nombre VARCHAR(50) NOT NULL,
+  apellido VARCHAR(50) NOT NULL,
+  telefono VARCHAR(30),
   email VARCHAR(100)
 );
 
--- Tabla de Responsabilidades
-CREATE TABLE Responsabilidades (
-  id_responsabilidad INT AUTO_INCREMENT PRIMARY KEY,
-  id_animal INT,
-  id_cuidador INT,
-  fecha_asignacion DATE,
-  FOREIGN KEY (id_animal) REFERENCES Animales(id_animal),
-  FOREIGN KEY (id_cuidador) REFERENCES Cuidadores(id_cuidador)
+-- ==================== ANIMALES ====================
+CREATE TABLE animales (
+  id_animal INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  especie VARCHAR(50) NOT NULL,             
+  edad INT NOT NULL,                       -- en años
+  alimentacion_diaria DECIMAL(6,2) NOT NULL, -- kg por día
+  id_jaula INT,
+  FOREIGN KEY (id_jaula) REFERENCES jaulas(id_jaula)
 );
 
--- ============================
--- DATOS DE PRUEBA
--- ============================
+-- ==================== RESPONSABILIDADES ====================
+CREATE TABLE responsabilidades (
+  id_responsabilidad INT AUTO_INCREMENT PRIMARY KEY,
+  id_cuidador INT NOT NULL,
+  id_jaula INT NOT NULL,
+  semana INT NOT NULL,                 -- número de semana
+  fecha_asignacion DATE NOT NULL,
+  FOREIGN KEY (id_cuidador) REFERENCES cuidadores(id_cuidador),
+  FOREIGN KEY (id_jaula) REFERENCES jaulas(id_jaula),
+  UNIQUE (id_cuidador, id_jaula, semana) -- evita duplicar asignaciones
+);
+
+-- ==================== DATOS DE PRUEBA ====================
 
 -- Jaulas
-INSERT INTO Jaulas (codigo, ubicacion, capacidad) VALUES
-('J-001', 'Sector Norte', 5),
-('J-002', 'Sector Sur', 3),
-('J-003', 'Sector Este', 4);
-
--- Animales
-INSERT INTO Animales (nombre, especie, edad, alimentacion_diaria, id_jaula) VALUES
-('Lola', 'Elefante', 12, 50.00, 1),
-('Max', 'Tigre', 7, 10.50, 2),
-('Kiki', 'Mono', 4, 3.20, 3),
-('Nina', 'Jirafa', 9, 15.00, 1),
-('Rex', 'León', 6, 12.00, 2);
+INSERT INTO jaulas (codigo, ubicacion, capacidad) VALUES
+('J-001', 'Sector Felinos', 3),
+('J-002', 'Sector Herbívoros', 4),
+('J-003', 'Sector Aves', 10),
+('J-004', 'Sector Reptiles', 6),
+('J-005', 'Sector Acuáticos', 8);
 
 -- Cuidadores
-INSERT INTO Cuidadores (nombre, apellido, telefono, email) VALUES
-('Juan', 'Pérez', '123456789', 'juan.perez@zoo.com'),
-('María', 'Gómez', '987654321', 'maria.gomez@zoo.com'),
-('Carlos', 'López', '456789123', 'carlos.lopez@zoo.com');
+INSERT INTO cuidadores (nombre, apellido, telefono, email) VALUES
+('Pepito', 'González', '111-222', 'pepito@example.com'),
+('María', 'López', '333-444', 'maria@example.com'),
+('Carlos', 'Ramírez', '555-666', 'carlos@example.com'),
+('Lucía', 'Fernández', '777-888', 'lucia@example.com'),
+('Jorge', 'Martínez', '999-000', 'jorge@example.com');
+
+-- Animales
+INSERT INTO animales (nombre, especie, edad, alimentacion_diaria, id_jaula) VALUES
+('León', 'Panthera leo', 8, 12.00, 1),
+('Leopardo', 'Panthera pardus', 5, 7.00, 1),
+('Tigre', 'Panthera tigris', 6, 14.00, 1),
+('Cebra', 'Equus quagga', 6, 8.00, 2),
+('Antílope', 'Antilope cervicapra', 4, 5.00, 2),
+('Jirafa', 'Giraffa camelopardalis', 10, 20.00, 2),
+('Guacamayo', 'Ara macao', 3, 0.15, 3),
+('Águila', 'Aquila chrysaetos', 7, 0.50, 3),
+('Flamenco', 'Phoenicopterus roseus', 5, 0.40, 3),
+('Cocodrilo', 'Crocodylus niloticus', 12, 10.00, 4),
+('Iguana', 'Iguana iguana', 4, 0.30, 4),
+('Serpiente Pitón', 'Python bivittatus', 9, 2.00, 4),
+('Delfín', 'Delphinus delphis', 15, 12.00, 5),
+('Pingüino', 'Spheniscidae', 6, 3.00, 5),
+('Foca', 'Phoca vitulina', 8, 6.00, 5);
 
 -- Responsabilidades
-INSERT INTO Responsabilidades (id_animal, id_cuidador, fecha_asignacion) VALUES
-(1, 1, '2025-11-01'),
-(2, 2, '2025-11-02'),
-(3, 3, '2025-11-03'),
-(4, 1, '2025-11-04'),
-(5, 2, '2025-11-05');
-
+INSERT INTO responsabilidades (id_cuidador, id_jaula, semana, fecha_asignacion) VALUES
+(1, 1, 1, '2025-11-01'),
+(2, 2, 1, '2025-11-01'),
+(3, 3, 1, '2025-11-01'),
+(4, 4, 1, '2025-11-01'),
+(5, 5, 1, '2025-11-01'),
+(1, 2, 2, '2025-11-08'),
+(2, 3, 2, '2025-11-08'),
+(3, 4, 2, '2025-11-08'),
+(4, 5, 2, '2025-11-08'),
+(5, 1, 2, '2025-11-08');
 -- ============================
 -- CONSULTAS DE PRUEBA
 -- ============================
 
--- 1. Animales con su jaula
 SELECT a.nombre AS animal, a.especie, j.codigo AS jaula, j.ubicacion
-FROM Animales a
-JOIN Jaulas j ON a.id_jaula = j.id_jaula;
+FROM animales a
+JOIN jaulas j ON a.id_jaula = j.id_jaula;
 
--- 2. Cuidadores y los animales que cuidan
-SELECT c.nombre AS cuidador, c.apellido, a.nombre AS animal, a.especie, r.fecha_asignacion
-FROM Responsabilidades r
-JOIN Cuidadores c ON r.id_cuidador = c.id_cuidador
-JOIN Animales a ON r.id_animal = a.id_animal;
+SELECT c.nombre AS cuidador, c.apellido,
+       a.nombre AS animal, a.especie,
+       r.fecha_asignacion
+FROM responsabilidades r
+JOIN cuidadores c ON r.id_cuidador = c.id_cuidador
+JOIN jaulas j ON r.id_jaula = j.id_jaula
+JOIN animales a ON j.id_jaula = a.id_jaula;
 
--- 3. Animales en cada jaula y su cuidador
-SELECT j.codigo AS jaula, j.ubicacion, a.nombre AS animal, c.nombre AS cuidador, c.apellido
-FROM Jaulas j
-JOIN Animales a ON j.id_jaula = a.id_jaula
-JOIN Responsabilidades r ON a.id_animal = r.id_animal
-JOIN Cuidadores c ON r.id_cuidador = c.id_cuidador;
+SELECT j.codigo AS jaula, j.ubicacion,
+       a.nombre AS animal,
+       c.nombre AS cuidador, c.apellido
+FROM jaulas j
+JOIN animales a ON j.id_jaula = a.id_jaula
+JOIN responsabilidades r ON j.id_jaula = r.id_jaula
+JOIN cuidadores c ON r.id_cuidador = c.id_cuidador;
 
--- 4. Cantidad de animales por jaula
 SELECT j.codigo, COUNT(a.id_animal) AS cantidad_animales
-FROM Jaulas j
-LEFT JOIN Animales a ON j.id_jaula = a.id_jaula
+FROM jaulas j
+LEFT JOIN animales a ON j.id_jaula = a.id_jaula
 GROUP BY j.codigo;
 
--- 5. Animales con alimentación diaria mayor a 10 kg
 SELECT nombre, especie, alimentacion_diaria
-FROM Animales
+FROM animales
 WHERE alimentacion_diaria > 10;

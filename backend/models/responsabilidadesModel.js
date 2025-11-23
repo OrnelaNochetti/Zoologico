@@ -1,33 +1,43 @@
-const connection = require('../db');
+const db = require('../db');
 
-exports.listar = (callback) => {
-  // Incluimos JOIN para mostrar también nombre del animal y cuidador
-  connection.query(
-    `SELECT r.id_responsabilidad, r.fecha_asignacion,
-            a.nombre AS animal, c.nombre AS cuidador, c.apellido
-     FROM Responsabilidades r
-     JOIN Animales a ON r.id_animal = a.id_animal
-     JOIN Cuidadores c ON r.id_cuidador = c.id_cuidador`,
-    callback
-  );
+const responsabilidadesModel = {
+  listar: (callback) => {
+    db.query('SELECT * FROM responsabilidades', (err, results) => {
+      if (err) return callback(err);
+      callback(null, results);
+    });
+  },
+
+  agregar: (data, callback) => {
+    const { id_cuidador, id_jaula, semana, fecha_asignacion } = data;
+    db.query(
+      'INSERT INTO responsabilidades (id_cuidador, id_jaula, semana, fecha_asignacion) VALUES (?, ?, ?, ?)',
+      [id_cuidador, id_jaula, semana, fecha_asignacion],
+      (err, results) => {
+        if (err) return callback(err);
+        callback(null, results);
+      }
+    );
+  },
+
+  editar: (id, data, callback) => {
+    const { id_cuidador, id_jaula, semana, fecha_asignacion } = data;
+    db.query(
+      'UPDATE responsabilidades SET id_cuidador=?, id_jaula=?, semana=?, fecha_asignacion=? WHERE id_responsabilidad=?',
+      [id_cuidador, id_jaula, semana, fecha_asignacion, id],
+      (err) => {
+        if (err) return callback(err);
+        callback(null);
+      }
+    );
+  },
+
+  eliminar: (id, callback) => {
+    db.query('DELETE FROM responsabilidades WHERE id_responsabilidad=?', [id], (err) => {
+      if (err) return callback(err);
+      callback(null);
+    });
+  }
 };
 
-exports.agregar = (data, callback) => {
-  connection.query(
-    'INSERT INTO Responsabilidades (id_animal, id_cuidador, fecha_asignacion) VALUES (?, ?, ?)',
-    [data.id_animal, data.id_cuidador, data.fecha_asignacion],
-    callback
-  );
-};
-
-exports.editar = (id, data, callback) => {
-  connection.query(
-    'UPDATE Responsabilidades SET id_animal=?, id_cuidador=?, fecha_asignacion=? WHERE id_responsabilidad=?',
-    [data.id_animal, data.id_cuidador, data.fecha_asignacion, id],
-    callback
-  );
-};
-
-exports.eliminar = (id, callback) => {
-  connection.query('DELETE FROM Responsabilidades WHERE id_responsabilidad=?', [id], callback);
-};
+module.exports = responsabilidadesModel;

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const jaulasController = require('../controllers/jaulasController');
 
-// CRUD Jaulas
 router.get('/', jaulasController.listar);
 router.post('/', jaulasController.agregar);
 router.put('/:id', jaulasController.editar);

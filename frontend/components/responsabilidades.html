@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Responsabilidades</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <h1>📋 Gestión de Responsabilidades</h1>
+    <nav>
+      <ul>
+        <li><a href="animales.html">Animales</a></li>
+        <li><a href="jaulas.html">Jaulas</a></li>
+        <li><a href="cuidadores.html">Cuidadores</a></li>
+        <li><a href="responsabilidades.html">Responsabilidades</a></li>
+        <li><a href="../index.html">Inicio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Listado -->
+    <section>
+      <h2>Listado de Responsabilidades</h2>
+      <ul id="lista-responsabilidades"></ul>
+    </section>
+
+    <!-- Formulario -->
+    <section>
+      <h2>Asignar Responsabilidad</h2>
+      <form id="form-responsabilidad">
+        <label>ID Cuidador:</label>
+        <input type="number" name="id_cuidador" required>
+
+        <label>ID Animal:</label>
+        <input type="number" name="id_animal" required>
+
+        <label>Descripción:</label>
+        <input type="text" name="descripcion" required>
+
+        <button type="submit">Asignar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+  </footer>
+
+  <script type="module">
+    import { getResponsabilidades, agregarResponsabilidad } from '../utils/api.js';
+    import { mostrarMensaje } from '../app.js';
+
+    const lista = document.getElementById('lista-responsabilidades');
+    const form = document.getElementById('form-responsabilidad');
+
+    // Listar responsabilidades
+    async function cargarResponsabilidades() {
+      lista.innerHTML = '';
+      const responsabilidades = await getResponsabilidades();
+      responsabilidades.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = `Cuidador #${r.id_cuidador} → Animal #${r.id_animal} | ${r.descripcion}`;
+        lista.appendChild(li);
+      });
+    }
+
+    // Agregar responsabilidad
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      await agregarResponsabilidad(data);
+      mostrarMensaje('Responsabilidad asignada correctamente', 'success');
+      form.reset();
+      cargarResponsabilidades();
+    });
+
+    cargarResponsabilidades();
+  </script>
+</body>
+</html>

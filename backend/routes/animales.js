@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const animalesController = require('../controllers/animalesController');
 
-// CRUD Animales
 router.get('/', animalesController.listar);
 router.post('/', animalesController.agregar);
 router.put('/:id', animalesController.editar);

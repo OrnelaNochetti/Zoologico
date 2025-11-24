@@ -1,8 +1,5 @@
 import { getAlimentacionPorJaula, getAlimentacionDeUnaJaula } from './utils/api.js';
 
-// =======================
-// Navegación activa
-// =======================
 document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll("nav a");
 
@@ -12,13 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Al cargar la página, mostramos la alimentación total
   mostrarAlimentacionTotal();
 });
 
-// =======================
-// Función global de mensajes
-// =======================
 export function mostrarMensaje(texto, tipo = "info") {
   const div = document.createElement("div");
   div.textContent = texto;
@@ -28,11 +21,6 @@ export function mostrarMensaje(texto, tipo = "info") {
   setTimeout(() => div.remove(), 3000);
 }
 
-// =======================
-// Alimentación por jaula
-// =======================
-
-// Mostrar todas las jaulas con su alimentación
 async function mostrarAlimentacionTotal() {
   try {
     const jaulas = await getAlimentacionPorJaula();
@@ -54,7 +42,6 @@ async function mostrarAlimentacionTotal() {
   }
 }
 
-// Mostrar una sola jaula (ejemplo: id=3)
 export async function mostrarAlimentacionDeJaula(id) {
   try {
     const jaula = await getAlimentacionDeUnaJaula(id);

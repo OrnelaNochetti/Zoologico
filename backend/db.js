@@ -1,11 +1,11 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-  host: '127.0.0.1',   // mejor usar IP en vez de 'localhost'
+  host: '127.0.0.1',
   user: 'root',
-  password: '',        // o la que uses
+  password: 'pc2025',
   database: 'zoologico',
-  port: 3306,          // ← este es el puerto correcto según tu my.ini
+  port: 3306,
   connectTimeout: 10000
 });
 

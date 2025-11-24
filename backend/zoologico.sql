@@ -1,4 +1,3 @@
--- ==================== JAULAS ====================
 CREATE TABLE jaulas (
   id_jaula INT AUTO_INCREMENT PRIMARY KEY,
   codigo VARCHAR(50) NOT NULL,
@@ -6,7 +5,6 @@ CREATE TABLE jaulas (
   capacidad INT NOT NULL
 );
 
--- ==================== CUIDADORES ====================
 CREATE TABLE cuidadores (
   id_cuidador INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL,
@@ -15,32 +13,27 @@ CREATE TABLE cuidadores (
   email VARCHAR(100)
 );
 
--- ==================== ANIMALES ====================
 CREATE TABLE animales (
   id_animal INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL,
   especie VARCHAR(50) NOT NULL,             
-  edad INT NOT NULL,                       -- en años
-  alimentacion_diaria DECIMAL(6,2) NOT NULL, -- kg por día
+  edad INT NOT NULL,                       
+  alimentacion_diaria DECIMAL(6,2) NOT NULL, 
   id_jaula INT,
   FOREIGN KEY (id_jaula) REFERENCES jaulas(id_jaula)
 );
 
--- ==================== RESPONSABILIDADES ====================
 CREATE TABLE responsabilidades (
   id_responsabilidad INT AUTO_INCREMENT PRIMARY KEY,
   id_cuidador INT NOT NULL,
   id_jaula INT NOT NULL,
-  semana INT NOT NULL,                 -- número de semana
+  semana INT NOT NULL,
   fecha_asignacion DATE NOT NULL,
   FOREIGN KEY (id_cuidador) REFERENCES cuidadores(id_cuidador),
   FOREIGN KEY (id_jaula) REFERENCES jaulas(id_jaula),
-  UNIQUE (id_cuidador, id_jaula, semana) -- evita duplicar asignaciones
+  UNIQUE (id_cuidador, id_jaula, semana) 
 );
 
--- ==================== DATOS DE PRUEBA ====================
-
--- Jaulas
 INSERT INTO jaulas (codigo, ubicacion, capacidad) VALUES
 ('J-001', 'Sector Felinos', 3),
 ('J-002', 'Sector Herbívoros', 4),
@@ -48,7 +41,6 @@ INSERT INTO jaulas (codigo, ubicacion, capacidad) VALUES
 ('J-004', 'Sector Reptiles', 6),
 ('J-005', 'Sector Acuáticos', 8);
 
--- Cuidadores
 INSERT INTO cuidadores (nombre, apellido, telefono, email) VALUES
 ('Pepito', 'González', '111-222', 'pepito@example.com'),
 ('María', 'López', '333-444', 'maria@example.com'),
@@ -56,7 +48,6 @@ INSERT INTO cuidadores (nombre, apellido, telefono, email) VALUES
 ('Lucía', 'Fernández', '777-888', 'lucia@example.com'),
 ('Jorge', 'Martínez', '999-000', 'jorge@example.com');
 
--- Animales
 INSERT INTO animales (nombre, especie, edad, alimentacion_diaria, id_jaula) VALUES
 ('León', 'Panthera leo', 8, 12.00, 1),
 ('Leopardo', 'Panthera pardus', 5, 7.00, 1),
@@ -74,7 +65,6 @@ INSERT INTO animales (nombre, especie, edad, alimentacion_diaria, id_jaula) VALU
 ('Pingüino', 'Spheniscidae', 6, 3.00, 5),
 ('Foca', 'Phoca vitulina', 8, 6.00, 5);
 
--- Responsabilidades
 INSERT INTO responsabilidades (id_cuidador, id_jaula, semana, fecha_asignacion) VALUES
 (1, 1, 1, '2025-11-01'),
 (2, 2, 1, '2025-11-01'),
@@ -86,9 +76,6 @@ INSERT INTO responsabilidades (id_cuidador, id_jaula, semana, fecha_asignacion) 
 (3, 4, 2, '2025-11-08'),
 (4, 5, 2, '2025-11-08'),
 (5, 1, 2, '2025-11-08');
--- ============================
--- CONSULTAS DE PRUEBA
--- ============================
 
 SELECT a.nombre AS animal, a.especie, j.codigo AS jaula, j.ubicacion
 FROM animales a

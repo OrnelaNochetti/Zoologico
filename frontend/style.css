@@ -88,17 +88,15 @@ footer {
   padding: 1rem;
 }
 
-/* Contenedor principal que alinea listado y formulario */
 .contenedor-animales {
   display: flex;
-  justify-content: space-between; /* separa los cuadros */
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 2rem;                      /* espacio entre cuadros */
-  padding: 1rem;                  /* menos padding para que no se corten */
-  flex-wrap: wrap;                /* en pantallas chicas se apilan */
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
 }
 
-/* Tarjetas (listado y formulario) */
 .tarjeta {
   background: #fff;
   padding: 1rem;                  /* más compacto que 1.5rem */

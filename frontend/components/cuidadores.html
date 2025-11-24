@@ -11,7 +11,7 @@
       align-items: flex-start;
       gap: 2rem;
       padding: 1rem;
-      flex-wrap: wrap; /* en pantallas chicas se apilan */
+      flex-wrap: wrap;
     }
 
     .tarjeta {
@@ -20,8 +20,8 @@
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       flex: 1;
-      max-width: 45%;   /* cada cuadro ocupa menos de la mitad */
-      min-width: 300px; /* no se achican demasiado */
+      max-width: 45%;
+      min-width: 300px;
     }
 
     .tarjeta h2 {
@@ -31,10 +31,9 @@
       font-size: 1.2rem;
     }
 
-    /* Tabla con scroll interno */
     .listado {
-      max-height: 400px;   /* altura máxima visible */
-      overflow-y: auto;    /* scroll interno */
+      max-height: 400px;
+      overflow-y: auto;
     }
 
     table {
@@ -98,7 +97,6 @@
 
   <main>
     <div class="contenedor-cuidadores">
-      <!-- Formulario -->
       <section class="tarjeta formulario">
         <h2>Agregar Cuidador</h2>
         <form id="form-cuidador">
@@ -118,7 +116,6 @@
         </form>
       </section>
 
-      <!-- Tabla CRUD -->
       <section class="tarjeta listado">
         <h2>Listado de Cuidadores</h2>
         <table>

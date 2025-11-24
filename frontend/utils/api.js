@@ -1,6 +1,5 @@
 const BASE_URL = 'http://localhost:3000';
 
-// ------------------- ANIMALES -------------------
 export async function getAnimales() {
   const res = await fetch(`${BASE_URL}/animales`);
   return await res.json();
@@ -29,7 +28,6 @@ export async function eliminarAnimal(id) {
   return await res.json();
 }
 
-// ------------------- JAULAS -------------------
 export async function getJaulas() {
   const res = await fetch(`${BASE_URL}/jaulas`);
   return await res.json();
@@ -58,21 +56,16 @@ export async function eliminarJaula(id) {
   return await res.json();
 }
 
-// ⚡ NUEVAS FUNCIONALIDADES DE ALIMENTACIÓN ⚡
-
-// Alimentación total de todas las jaulas
 export async function getAlimentacionPorJaula() {
   const res = await fetch(`${BASE_URL}/jaulas/alimentacion`);
   return await res.json();
 }
 
-// Alimentación de una sola jaula por id
 export async function getAlimentacionDeUnaJaula(id) {
   const res = await fetch(`${BASE_URL}/jaulas/${id}/alimentacion`);
   return await res.json();
 }
 
-// ------------------- CUIDADORES -------------------
 export async function getCuidadores() {
   const res = await fetch(`${BASE_URL}/cuidadores`);
   return await res.json();
@@ -101,7 +94,6 @@ export async function eliminarCuidador(id) {
   return await res.json();
 }
 
-// ------------------- RESPONSABILIDADES -------------------
 export async function getResponsabilidades() {
   const res = await fetch(`${BASE_URL}/responsabilidades`);
   return await res.json();

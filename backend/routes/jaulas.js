@@ -1,12 +1,7 @@
-// routes/jaulas.js - CÓDIGO CORREGIDO PARA CommonJS (require/module.exports)
-
-const express = require('express'); // ⬅️ CORRECCIÓN 1: Usar require
-const db = require('../db'); // Asumimos que db.js exporta el objeto de conexión
+const express = require('express');
+const db = require('../db'); 
 const router = express.Router();
 
-// =======================
-// GET todas las jaulas
-// =======================
 router.get('/', (req, res) => {
     const sql = 'SELECT * FROM jaulas';
     db.query(sql, (err, result) => {
@@ -15,9 +10,6 @@ router.get('/', (req, res) => {
     });
 });
 
-// =======================
-// POST nueva jaula
-// =======================
 router.post('/', (req, res) => {
     const { codigo, ubicacion, capacidad } = req.body;
     const sql = 'INSERT INTO jaulas (codigo, ubicacion, capacidad) VALUES (?, ?, ?)';
@@ -27,9 +19,6 @@ router.post('/', (req, res) => {
     });
 });
 
-// =======================
-// PUT editar jaula
-// =======================
 router.put('/:id', (req, res) => {
     const { codigo, ubicacion, capacidad } = req.body;
     const sql = 'UPDATE jaulas SET codigo = ?, ubicacion = ?, capacidad = ? WHERE id_jaula = ?';
@@ -39,13 +28,9 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// =======================
-// DELETE eliminar jaula SOLO si está vacía
-// =======================
 router.delete('/:id', (req, res) => {
     const id = req.params.id;
 
-    // Verificar si la jaula tiene animales asignados
     const checkSql = 'SELECT COUNT(*) AS total FROM animales WHERE id_jaula = ?';
     db.query(checkSql, [id], (err, result) => {
         if (err) return res.status(500).send(err);
@@ -56,7 +41,6 @@ router.delete('/:id', (req, res) => {
             });
         }
 
-        // Si está vacía, eliminar
         const deleteSql = 'DELETE FROM jaulas WHERE id_jaula = ?';
         db.query(deleteSql, [id], (err2) => {
             if (err2) return res.status(500).send(err2);
@@ -65,9 +49,6 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-// =======================
-// Alimentación total por jaula (Rutas de Informe)
-// =======================
 router.get('/alimentacion', (req, res) => {
     const sql = `
         SELECT j.id_jaula, j.codigo, j.ubicacion, j.capacidad,
@@ -82,9 +63,6 @@ router.get('/alimentacion', (req, res) => {
     });
 });
 
-// =======================
-// Alimentación de una sola jaula
-// =======================
 router.get('/:id/alimentacion', (req, res) => {
     const sql = `
         SELECT j.id_jaula, j.codigo,
@@ -100,5 +78,4 @@ router.get('/:id/alimentacion', (req, res) => {
     });
 });
 
-// ⬅️ CORRECCIÓN 2: Usar module.exports
 module.exports = router;

@@ -49,4 +49,3 @@ const animalesModel = {
 
 
 module.exports = animalesModel;
-

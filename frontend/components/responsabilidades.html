@@ -13,7 +13,7 @@
         <li><a href="animales.html">Animales</a></li>
         <li><a href="jaulas.html">Jaulas</a></li>
         <li><a href="cuidadores.html">Cuidadores</a></li>
-        <li><a href="responsabilidades.html">Responsabilidades</a></li>
+        <li><a href="responsabilidades.html" class="active">Responsabilidades</a></li>
         <li><a href="../index.html">Inicio</a></li>
       </ul>
     </nav>
@@ -23,7 +23,19 @@
     <!-- Listado -->
     <section>
       <h2>Listado de Responsabilidades</h2>
-      <ul id="lista-responsabilidades"></ul>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cuidador</th>
+            <th>ID Jaula</th>
+            <th>Semana</th>
+            <th>Fecha Asignación</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-responsabilidades"></tbody>
+      </table>
     </section>
 
     <!-- Formulario -->
@@ -55,60 +67,73 @@
     import { getResponsabilidades, agregarResponsabilidad, eliminarResponsabilidad, editarResponsabilidad } from '../utils/api.js';
     import { mostrarMensaje } from '../app.js';
 
-    const lista = document.getElementById('lista-responsabilidades');
+    const tabla = document.getElementById('tabla-responsabilidades');
     const form = document.getElementById('form-responsabilidad');
+    let editandoId = null; // 🔑 flag para saber si estamos editando
 
-    // Handler original para agregar responsabilidades
-    const agregarHandler = async (e) => {
+    // Handler único para agregar/editar
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
-      await agregarResponsabilidad(data);
-      mostrarMensaje('Responsabilidad agregada correctamente', 'success');
-      form.reset();
-      cargarResponsabilidades();
-    };
-    form.addEventListener('submit', agregarHandler);
+
+      try {
+        if (editandoId) {
+          await editarResponsabilidad(editandoId, data);
+          mostrarMensaje('Responsabilidad editada correctamente', 'success');
+          editandoId = null; // volver a modo agregar
+        } else {
+          await agregarResponsabilidad(data);
+          mostrarMensaje('Responsabilidad agregada correctamente', 'success');
+        }
+        form.reset();
+        cargarResponsabilidades();
+      } catch (error) {
+        mostrarMensaje('Error al guardar responsabilidad', 'error');
+        console.error(error);
+      }
+    });
 
     // Listar responsabilidades con botones de eliminar y editar
     async function cargarResponsabilidades() {
-      lista.innerHTML = '';
+      tabla.innerHTML = ''; // 🔑 limpiar antes de renderizar
       const responsabilidades = await getResponsabilidades();
+
       responsabilidades.forEach(resp => {
-        const li = document.createElement('li');
-        li.textContent = `Responsabilidad #${resp.id_responsabilidad} - Cuidador: ${resp.id_cuidador}, Jaula: ${resp.id_jaula}, Semana: ${resp.semana}, Fecha: ${resp.fecha_asignacion}`;
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td>${resp.id_responsabilidad}</td>
+          <td>${resp.nombre_cuidador} ${resp.apellido_cuidador}</td>
+          <td>${resp.id_jaula}</td>
+          <td>${resp.semana}</td>
+          <td>${resp.fecha_asignacion}</td>
+          <td>
+            <button class="btn-eliminar">Eliminar</button>
+            <button class="btn-editar">Editar</button>
+          </td>
+        `;
 
         // Botón eliminar
-        const btnEliminar = document.createElement('button');
-        btnEliminar.textContent = 'Eliminar';
-        btnEliminar.addEventListener('click', async () => {
-          await eliminarResponsabilidad(resp.id_responsabilidad);
-          mostrarMensaje('Responsabilidad eliminada correctamente', 'success');
-          cargarResponsabilidades();
+        fila.querySelector('.btn-eliminar').addEventListener('click', async () => {
+          try {
+            await eliminarResponsabilidad(resp.id_responsabilidad);
+            mostrarMensaje('Responsabilidad eliminada correctamente', 'success');
+            cargarResponsabilidades();
+          } catch (error) {
+            mostrarMensaje('⚠️ No se puede eliminar la responsabilidad', 'error');
+            console.error(error);
+          }
         });
 
         // Botón editar
-        const btnEditar = document.createElement('button');
-        btnEditar.textContent = 'Editar';
-        btnEditar.addEventListener('click', () => {
+        fila.querySelector('.btn-editar').addEventListener('click', () => {
           form.id_cuidador.value = resp.id_cuidador;
           form.id_jaula.value = resp.id_jaula;
           form.semana.value = resp.semana;
           form.fecha_asignacion.value = resp.fecha_asignacion;
-
-          form.onsubmit = async (e) => {
-            e.preventDefault();
-            const data = Object.fromEntries(new FormData(form));
-            await editarResponsabilidad(resp.id_responsabilidad, data);
-            mostrarMensaje('Responsabilidad editada correctamente', 'success');
-            form.reset();
-            cargarResponsabilidades();
-            form.onsubmit = agregarHandler;
-          };
+          editandoId = resp.id_responsabilidad; // 🔑 activa modo edición
         });
 
-        li.appendChild(btnEliminar);
-        li.appendChild(btnEditar);
-        lista.appendChild(li);
+        tabla.appendChild(fila);
       });
     }
 

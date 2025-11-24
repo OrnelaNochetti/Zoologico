@@ -2,50 +2,57 @@ const db = require('../db');
 
 const animalesModel = {
   listar: (callback) => {
-    db.query('SELECT * FROM animales', (err, results) => {
+    const sql = `
+      SELECT a.id_animal, a.nombre, a.especie, a.edad, a.alimentacion_diaria,
+             j.id_jaula, j.ubicacion AS sector
+      FROM animales a
+      LEFT JOIN jaulas j ON a.id_jaula = j.id_jaula
+    `;
+    db.query(sql, (err, results) => {
       if (err) return callback(err);
       callback(null, results);
     });
   },
 
   agregar: (data, callback) => {
-  const { nombre, especie, edad, alimentacion_diaria, id_jaula } = data;
-  db.query(
-    'INSERT INTO animales (nombre, especie, edad, alimentacion_diaria, id_jaula) VALUES (?, ?, ?, ?, ?)',
-    [nombre, especie, edad, alimentacion_diaria, id_jaula],
-    (err, results) => {
+    const { nombre, especie, edad, alimentacion_diaria, id_jaula } = data;
+    const sql = 'INSERT INTO animales (nombre, especie, edad, alimentacion_diaria, id_jaula) VALUES (?, ?, ?, ?, ?)';
+    db.query(sql, [nombre, especie, edad, alimentacion_diaria, id_jaula], (err, results) => {
       if (err) return callback(err);
       callback(null, results);
-      }
-    );
+    });
   },
 
   editar: (id, data, callback) => {
     const { nombre, especie, edad, alimentacion_diaria, id_jaula } = data;
-    db.query(
-      'UPDATE animales SET nombre=?, especie=?, edad=?, alimentacion_diaria=?, id_jaula=? WHERE id_animal=?',
-      [nombre, especie, edad, alimentacion_diaria, id_jaula, id],
-      (err) => {
-        if (err) return callback(err);
-        callback(null);
-      }
-    );
+    const sql = 'UPDATE animales SET nombre=?, especie=?, edad=?, alimentacion_diaria=?, id_jaula=? WHERE id_animal=?';
+    db.query(sql, [nombre, especie, edad, alimentacion_diaria, id_jaula, id], (err) => {
+      if (err) return callback(err);
+      callback(null);
+    });
   },
 
   eliminar: (id, callback) => {
-    db.query('DELETE FROM animales WHERE id_animal=?', [id], (err) => {
+    const sql = 'DELETE FROM animales WHERE id_animal=?';
+    db.query(sql, [id], (err) => {
       if (err) return callback(err);
       callback(null);
     });
   },
 
   buscar: (nombre, callback) => {
-    db.query('SELECT * FROM animales WHERE nombre LIKE ?', [`%${nombre}%`], (err, results) => {
+    const sql = `
+      SELECT a.id_animal, a.nombre, a.especie, a.edad, a.alimentacion_diaria,
+             j.id_jaula, j.ubicacion AS sector
+      FROM animales a
+      LEFT JOIN jaulas j ON a.id_jaula = j.id_jaula
+      WHERE a.nombre LIKE ?
+    `;
+    db.query(sql, [`%${nombre}%`], (err, results) => {
       if (err) return callback(err);
       callback(null, results);
     });
   }
 };
-
 
 module.exports = animalesModel;

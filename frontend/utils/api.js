@@ -25,9 +25,7 @@ export async function editarAnimal(id, data) {
 }
 
 export async function eliminarAnimal(id) {
-  const res = await fetch(`${BASE_URL}/animales/${id}`, {
-    method: 'DELETE',
-  });
+  const res = await fetch(`${BASE_URL}/animales/${id}`, { method: 'DELETE' });
   return await res.json();
 }
 
@@ -56,9 +54,21 @@ export async function editarJaula(id, data) {
 }
 
 export async function eliminarJaula(id) {
-  const res = await fetch(`${BASE_URL}/jaulas/${id}`, {
-    method: 'DELETE',
-  });
+  const res = await fetch(`${BASE_URL}/jaulas/${id}`, { method: 'DELETE' });
+  return await res.json();
+}
+
+// ⚡ NUEVAS FUNCIONALIDADES DE ALIMENTACIÓN ⚡
+
+// Alimentación total de todas las jaulas
+export async function getAlimentacionPorJaula() {
+  const res = await fetch(`${BASE_URL}/jaulas/alimentacion`);
+  return await res.json();
+}
+
+// Alimentación de una sola jaula por id
+export async function getAlimentacionDeUnaJaula(id) {
+  const res = await fetch(`${BASE_URL}/jaulas/${id}/alimentacion`);
   return await res.json();
 }
 
@@ -87,9 +97,7 @@ export async function editarCuidador(id, data) {
 }
 
 export async function eliminarCuidador(id) {
-  const res = await fetch(`${BASE_URL}/cuidadores/${id}`, {
-    method: 'DELETE',
-  });
+  const res = await fetch(`${BASE_URL}/cuidadores/${id}`, { method: 'DELETE' });
   return await res.json();
 }
 
@@ -118,8 +126,6 @@ export async function editarResponsabilidad(id, data) {
 }
 
 export async function eliminarResponsabilidad(id) {
-  const res = await fetch(`${BASE_URL}/responsabilidades/${id}`, {
-    method: 'DELETE',
-  });
+  const res = await fetch(`${BASE_URL}/responsabilidades/${id}`, { method: 'DELETE' });
   return await res.json();
 }

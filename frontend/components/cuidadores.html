@@ -20,12 +20,6 @@
   </header>
 
   <main>
-    <!-- Listado -->
-    <section>
-      <h2>Listado de Cuidadores</h2>
-      <ul id="lista-cuidadores"></ul>
-    </section>
-
     <!-- Formulario -->
     <section>
       <h2>Agregar / Editar Cuidador</h2>
@@ -33,14 +27,35 @@
         <label>Nombre:</label>
         <input type="text" name="nombre" required>
 
-        <label>Edad:</label>
-        <input type="number" name="edad" required>
+        <label>Apellido:</label>
+        <input type="text" name="apellido" required>
 
-        <label>Experiencia (años):</label>
-        <input type="number" name="experiencia" required>
+        <label>Teléfono:</label>
+        <input type="text" name="telefono">
+
+        <label>Email:</label>
+        <input type="email" name="email">
 
         <button type="submit">Guardar</button>
       </form>
+    </section>
+
+    <!-- Tabla CRUD -->
+    <section>
+      <h2>Listado de Cuidadores</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-cuidadores"></tbody>
+      </table>
     </section>
   </main>
 
@@ -52,59 +67,73 @@
     import { getCuidadores, agregarCuidador, eliminarCuidador, editarCuidador } from '../utils/api.js';
     import { mostrarMensaje } from '../app.js';
 
-    const lista = document.getElementById('lista-cuidadores');
+    const tabla = document.getElementById('tabla-cuidadores');
     const form = document.getElementById('form-cuidador');
+    let editandoId = null;
 
-    // Handler original para agregar cuidadores
-    const agregarHandler = async (e) => {
+    // Handler único para agregar/editar
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
-      await agregarCuidador(data);
-      mostrarMensaje('Cuidador agregado correctamente', 'success');
-      form.reset();
-      cargarCuidadores();
-    };
-    form.addEventListener('submit', agregarHandler);
 
-    // Listar cuidadores con botones de eliminar y editar
+      try {
+        if (editandoId) {
+          await editarCuidador(editandoId, data);
+          mostrarMensaje('Cuidador editado correctamente', 'success');
+          editandoId = null;
+        } else {
+          await agregarCuidador(data);
+          mostrarMensaje('Cuidador agregado correctamente', 'success');
+        }
+        form.reset();
+        cargarCuidadores();
+      } catch (error) {
+        mostrarMensaje('Error al guardar cuidador', 'error');
+        console.error(error);
+      }
+    });
+
+    // Listar cuidadores
     async function cargarCuidadores() {
-      lista.innerHTML = '';
+      tabla.innerHTML = '';
       const cuidadores = await getCuidadores();
+
       cuidadores.forEach(cuidador => {
-        const li = document.createElement('li');
-        li.textContent = `Cuidador #${cuidador.id_cuidador} - ${cuidador.nombre}, Edad: ${cuidador.edad}, Experiencia: ${cuidador.experiencia} años`;
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td>${cuidador.id_cuidador}</td>
+          <td>${cuidador.nombre}</td>
+          <td>${cuidador.apellido}</td>
+          <td>${cuidador.telefono || '-'}</td>
+          <td>${cuidador.email || '-'}</td>
+          <td>
+            <button class="btn-eliminar">Eliminar</button>
+            <button class="btn-editar">Editar</button>
+          </td>
+        `;
 
         // Botón eliminar
-        const btnEliminar = document.createElement('button');
-        btnEliminar.textContent = 'Eliminar';
-        btnEliminar.addEventListener('click', async () => {
-          await eliminarCuidador(cuidador.id_cuidador);
-          mostrarMensaje('Cuidador eliminado correctamente', 'success');
-          cargarCuidadores();
+        fila.querySelector('.btn-eliminar').addEventListener('click', async () => {
+          try {
+            const respuesta = await eliminarCuidador(cuidador.id_cuidador);
+            mostrarMensaje(respuesta.message || 'Cuidador eliminado correctamente', 'success');
+            cargarCuidadores();
+          } catch (error) {
+            mostrarMensaje(error.message || '⚠️ No se puede eliminar: el cuidador tiene responsabilidades asignadas', 'error');
+            console.error(error);
+          }
         });
 
         // Botón editar
-        const btnEditar = document.createElement('button');
-        btnEditar.textContent = 'Editar';
-        btnEditar.addEventListener('click', () => {
+        fila.querySelector('.btn-editar').addEventListener('click', () => {
           form.nombre.value = cuidador.nombre;
-          form.edad.value = cuidador.edad;
-          form.experiencia.value = cuidador.experiencia;
-
-          form.onsubmit = async (e) => {
-            e.preventDefault();
-            const data = Object.fromEntries(new FormData(form));
-            await editarCuidador(cuidador.id_cuidador, data);
-            mostrarMensaje('Cuidador editado correctamente', 'success');
-            form.reset();
-            cargarCuidadores();
-            form.onsubmit = agregarHandler;
-          };
+          form.apellido.value = cuidador.apellido;
+          form.telefono.value = cuidador.telefono || '';
+          form.email.value = cuidador.email || '';
+          editandoId = cuidador.id_cuidador;
         });
 
-        li.appendChild(btnEliminar);
-        li.appendChild(btnEditar);
-        lista.appendChild(li);
+        tabla.appendChild(fila);
       });
     }
 

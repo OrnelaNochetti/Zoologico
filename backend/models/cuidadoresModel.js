@@ -33,9 +33,21 @@ const cuidadoresModel = {
   },
 
   eliminar: (id, callback) => {
-    db.query('DELETE FROM cuidadores WHERE id_cuidador=?', [id], (err) => {
+    // Primero verificamos si el cuidador tiene responsabilidades
+    const checkSql = 'SELECT COUNT(*) AS total FROM responsabilidades WHERE id_cuidador=?';
+    db.query(checkSql, [id], (err, result) => {
       if (err) return callback(err);
-      callback(null);
+
+      if (result[0].total > 0) {
+        // devolvemos un error controlado
+        return callback(new Error('No se puede eliminar: el cuidador tiene responsabilidades asignadas.'));
+      }
+
+      // Si no tiene responsabilidades, eliminamos
+      db.query('DELETE FROM cuidadores WHERE id_cuidador=?', [id], (err2) => {
+        if (err2) return callback(err2);
+        callback(null);
+      });
     });
   }
 };

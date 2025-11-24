@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zoológico - Alimentación</title>
   <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../alimentacion.css">
 </head>
 <body>
   <header>
@@ -21,25 +22,27 @@
   </header>
 
   <main>
-    <section>
-      <h2>Alimentación diaria por jaula</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Ubicación</th>
-            <th>Alimentación diaria</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-alimentacion">
-          <!-- Se llena dinámicamente desde app.js -->
-        </tbody>
-      </table>
-    </section>
+    <div class="contenedor-alimentacion">
+      <section class="tarjeta listado">
+        <h2>Alimentación diaria por jaula</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Ubicación</th>
+              <th>Alimentación diaria</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-alimentacion">
+            <!-- Se llena dinámicamente desde app.js -->
+          </tbody>
+        </table>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+    <p>&copy;2025 ZoológicoMadagascar</p>
   </footer>
 
   <script type="module" src="../app.js"></script>

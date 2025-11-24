@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <title>Gestión de Responsabilidades</title>
   <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../responsabilidades.css">
 </head>
 <body>
   <header>
-    <h1>📝 Gestión de Responsabilidades</h1>
+    <h1>📝 Gestión de Tareas</h1>
     <nav>
       <ul>
         <li><a href="animales.html">Animales</a></li>
@@ -20,47 +21,49 @@
   </header>
 
   <main>
-    <!-- Listado -->
-    <section>
-      <h2>Listado de Responsabilidades</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Cuidador</th>
-            <th>ID Jaula</th>
-            <th>Semana</th>
-            <th>Fecha Asignación</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-responsabilidades"></tbody>
-      </table>
-    </section>
+    <div class="contenedor-responsabilidades">
+      <!-- Listado -->
+      <section class="tarjeta listado">
+        <h2>Listado de Tareas</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cuidador</th>
+              <th>ID Jaula</th>
+              <th>Semana</th>
+              <th>Fecha Asignación</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-responsabilidades"></tbody>
+        </table>
+      </section>
 
-    <!-- Formulario -->
-    <section>
-      <h2>Agregar / Editar Responsabilidad</h2>
-      <form id="form-responsabilidad">
-        <label>ID Cuidador:</label>
-        <input type="number" name="id_cuidador" required>
+      <!-- Formulario -->
+      <section class="tarjeta formulario">
+        <h2>Agregar Tarea</h2>
+        <form id="form-responsabilidad">
+          <label>ID Cuidador:</label>
+          <input type="number" name="id_cuidador" required>
 
-        <label>ID Jaula:</label>
-        <input type="number" name="id_jaula" required>
+          <label>ID Jaula:</label>
+          <input type="number" name="id_jaula" required>
 
-        <label>Semana:</label>
-        <input type="number" name="semana" required>
+          <label>Semana:</label>
+          <input type="number" name="semana" required>
 
-        <label>Fecha Asignación:</label>
-        <input type="date" name="fecha_asignacion" required>
+          <label>Fecha Asignación:</label>
+          <input type="date" name="fecha_asignacion" required>
 
-        <button type="submit">Guardar</button>
-      </form>
-    </section>
+          <button type="submit">Guardar</button>
+        </form>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+    <p>&copy;2025 ZoológicoMadagascar</p>
   </footer>
 
   <script type="module">
@@ -69,9 +72,8 @@
 
     const tabla = document.getElementById('tabla-responsabilidades');
     const form = document.getElementById('form-responsabilidad');
-    let editandoId = null; // 🔑 flag para saber si estamos editando
+    let editandoId = null;
 
-    // Handler único para agregar/editar
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
@@ -80,7 +82,7 @@
         if (editandoId) {
           await editarResponsabilidad(editandoId, data);
           mostrarMensaje('Responsabilidad editada correctamente', 'success');
-          editandoId = null; // volver a modo agregar
+          editandoId = null;
         } else {
           await agregarResponsabilidad(data);
           mostrarMensaje('Responsabilidad agregada correctamente', 'success');
@@ -93,9 +95,8 @@
       }
     });
 
-    // Listar responsabilidades con botones de eliminar y editar
     async function cargarResponsabilidades() {
-      tabla.innerHTML = ''; // 🔑 limpiar antes de renderizar
+      tabla.innerHTML = '';
       const responsabilidades = await getResponsabilidades();
 
       responsabilidades.forEach(resp => {
@@ -112,7 +113,6 @@
           </td>
         `;
 
-        // Botón eliminar
         fila.querySelector('.btn-eliminar').addEventListener('click', async () => {
           try {
             await eliminarResponsabilidad(resp.id_responsabilidad);
@@ -124,13 +124,12 @@
           }
         });
 
-        // Botón editar
         fila.querySelector('.btn-editar').addEventListener('click', () => {
           form.id_cuidador.value = resp.id_cuidador;
           form.id_jaula.value = resp.id_jaula;
           form.semana.value = resp.semana;
           form.fecha_asignacion.value = resp.fecha_asignacion;
-          editandoId = resp.id_responsabilidad; // 🔑 activa modo edición
+          editandoId = resp.id_responsabilidad;
         });
 
         tabla.appendChild(fila);

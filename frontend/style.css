@@ -87,3 +87,449 @@ footer {
   text-align: center;
   padding: 1rem;
 }
+
+/* Contenedor principal que alinea listado y formulario */
+.contenedor-animales {
+  display: flex;
+  justify-content: space-between; /* separa los cuadros */
+  align-items: flex-start;
+  gap: 2rem;                      /* espacio entre cuadros */
+  padding: 1rem;                  /* menos padding para que no se corten */
+  flex-wrap: wrap;                /* en pantallas chicas se apilan */
+}
+
+/* Tarjetas (listado y formulario) */
+.tarjeta {
+  background: #fff;
+  padding: 1rem;                  /* más compacto que 1.5rem */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  flex: 1;                        /* que se repartan el ancho */
+  max-width: 45%;                 /* cada cuadro ocupa menos de la mitad */
+  min-width: 300px;               /* no se achican demasiado en pantallas chicas */
+}
+
+/* Títulos dentro de las tarjetas */
+.tarjeta h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;              /* más compacto */
+}
+
+/* Tabla del listado */
+.listado table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.listado th, .listado td {
+  padding: 0.4rem;                /* menos espacio interno */
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.9rem;              /* texto más compacto */
+}
+
+/* Formulario */
+.formulario label {
+  display: block;
+  margin-top: 0.6rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.formulario input,
+.formulario select {
+  width: 100%;
+  padding: 0.4rem;
+  margin-top: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.formulario button {
+  margin-top: 0.8rem;
+  width: 100%;
+  padding: 0.6rem;
+  background: #1abc9c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formulario button:hover {
+  background: #16a085;
+}
+
+/* Texto aclaratorio de jaula */
+.info {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: #555;
+}
+.listado {
+  max-height: 400px;     /* 🔧 altura máxima visible */
+  overflow-y: auto;      /* 🔑 activa scroll vertical solo dentro del listado */
+}
+
+.listado table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.listado th, .listado td {
+  padding: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.9rem;
+}
+/* Contenedor principal que alinea formulario y listado */
+.contenedor-cuidadores {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap; /* en pantallas chicas se apilan */
+}
+
+/* Tarjetas (formulario y listado) */
+.tarjeta {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  flex: 1;
+  max-width: 45%;   /* cada cuadro ocupa menos de la mitad */
+  min-width: 300px; /* no se achican demasiado */
+}
+
+/* Títulos dentro de las tarjetas */
+.tarjeta h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Tabla con scroll interno */
+.listado {
+  max-height: 400px;   /* altura máxima visible */
+  overflow-y: auto;    /* scroll interno */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+/* Formulario */
+.formulario label {
+  display: block;
+  margin-top: 0.6rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.formulario input {
+  width: 100%;
+  padding: 0.4rem;
+  margin-top: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.formulario button {
+  margin-top: 0.8rem;
+  width: 100%;
+  padding: 0.6rem;
+  background: #1abc9c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formulario button:hover {
+  background: #16a085;
+}
+/* Contenedor principal que alinea formulario y listado */
+.contenedor-cuidadores {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap; /* en pantallas chicas se apilan */
+}
+
+/* Tarjetas (formulario y listado) */
+.tarjeta {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  flex: 1;
+  max-width: 45%;   /* cada cuadro ocupa menos de la mitad */
+  min-width: 300px; /* no se achican demasiado */
+}
+
+/* Títulos dentro de las tarjetas */
+.tarjeta h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Tabla con scroll interno */
+.listado {
+  max-height: 400px;   /* altura máxima visible */
+  overflow-y: auto;    /* scroll interno */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+/* Formulario */
+.formulario label {
+  display: block;
+  margin-top: 0.6rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.formulario input {
+  width: 100%;
+  padding: 0.4rem;
+  margin-top: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.formulario button {
+  margin-top: 0.8rem;
+  width: 100%;
+  padding: 0.6rem;
+  background: #1abc9c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formulario button:hover {
+  background: #16a085;
+}
+.contenedor-jaulas {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.tarjeta {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex: 1;
+  max-width: 45%;
+  min-width: 300px;
+}
+
+.tarjeta h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.listado {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.formulario label {
+  display: block;
+  margin-top: 0.6rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.formulario input,
+.formulario select {
+  width: 100%;
+  padding: 0.4rem;
+  margin-top: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.formulario button {
+  margin-top: 0.8rem;
+  width: 100%;
+  padding: 0.6rem;
+  background: #1abc9c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formulario button:hover {
+  background: #16a085;
+}
+.contenedor-responsabilidades {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.tarjeta {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex: 1;
+  max-width: 45%;
+  min-width: 300px;
+}
+
+.tarjeta h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Listado con scroll interno */
+.listado {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+/* Formulario */
+.formulario label {
+  display: block;
+  margin-top: 0.6rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.formulario input {
+  width: 100%;
+  padding: 0.4rem;
+  margin-top: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.formulario button {
+  margin-top: 0.8rem;
+  width: 100%;
+  padding: 0.6rem;
+  background: #1abc9c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formulario button:hover {
+  background: #16a085;
+}
+.contenedor-alimentacion {
+  display: flex;
+  justify-content: center; /* centramos la tarjeta */
+  padding: 1rem;
+}
+
+.tarjeta {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 700px; /* ancho máximo */
+}
+
+.tarjeta h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Listado con scroll interno */
+.listado {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.9rem;
+}

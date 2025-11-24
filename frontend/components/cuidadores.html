@@ -4,6 +4,82 @@
   <meta charset="UTF-8">
   <title>Gestión de Cuidadores</title>
   <link rel="stylesheet" href="../style.css">
+  <style>
+    .contenedor-cuidadores {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      padding: 1rem;
+      flex-wrap: wrap; /* en pantallas chicas se apilan */
+    }
+
+    .tarjeta {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex: 1;
+      max-width: 45%;   /* cada cuadro ocupa menos de la mitad */
+      min-width: 300px; /* no se achican demasiado */
+    }
+
+    .tarjeta h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    /* Tabla con scroll interno */
+    .listado {
+      max-height: 400px;   /* altura máxima visible */
+      overflow-y: auto;    /* scroll interno */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.4rem;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    form label {
+      display: block;
+      margin-top: 0.6rem;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    form input {
+      width: 100%;
+      padding: 0.4rem;
+      margin-top: 0.2rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    form button {
+      margin-top: 0.8rem;
+      width: 100%;
+      padding: 0.6rem;
+      background: #1abc9c;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background: #16a085;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -12,7 +88,7 @@
       <ul>
         <li><a href="animales.html">Animales</a></li>
         <li><a href="jaulas.html">Jaulas</a></li>
-        <li><a href="cuidadores.html">Cuidadores</a></li>
+        <li><a href="cuidadores.html" class="active">Cuidadores</a></li>
         <li><a href="responsabilidades.html">Responsabilidades</a></li>
         <li><a href="../index.html">Inicio</a></li>
       </ul>
@@ -20,47 +96,49 @@
   </header>
 
   <main>
-    <!-- Formulario -->
-    <section>
-      <h2>Agregar / Editar Cuidador</h2>
-      <form id="form-cuidador">
-        <label>Nombre:</label>
-        <input type="text" name="nombre" required>
+    <div class="contenedor-cuidadores">
+      <!-- Formulario -->
+      <section class="tarjeta formulario">
+        <h2>Agregar Cuidador</h2>
+        <form id="form-cuidador">
+          <label>Nombre:</label>
+          <input type="text" name="nombre" required>
 
-        <label>Apellido:</label>
-        <input type="text" name="apellido" required>
+          <label>Apellido:</label>
+          <input type="text" name="apellido" required>
 
-        <label>Teléfono:</label>
-        <input type="text" name="telefono">
+          <label>Teléfono:</label>
+          <input type="text" name="telefono">
 
-        <label>Email:</label>
-        <input type="email" name="email">
+          <label>Email:</label>
+          <input type="email" name="email">
 
-        <button type="submit">Guardar</button>
-      </form>
-    </section>
+          <button type="submit">Guardar</button>
+        </form>
+      </section>
 
-    <!-- Tabla CRUD -->
-    <section>
-      <h2>Listado de Cuidadores</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-cuidadores"></tbody>
-      </table>
-    </section>
+      <!-- Tabla CRUD -->
+      <section class="tarjeta listado">
+        <h2>Listado de Cuidadores</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-cuidadores"></tbody>
+        </table>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+    <p>&copy;2025 ZoológicoMadagascar</p>
   </footer>
 
   <script type="module">
@@ -71,7 +149,6 @@
     const form = document.getElementById('form-cuidador');
     let editandoId = null;
 
-    // Handler único para agregar/editar
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
@@ -93,7 +170,6 @@
       }
     });
 
-    // Listar cuidadores
     async function cargarCuidadores() {
       tabla.innerHTML = '';
       const cuidadores = await getCuidadores();
@@ -112,7 +188,6 @@
           </td>
         `;
 
-        // Botón eliminar
         fila.querySelector('.btn-eliminar').addEventListener('click', async () => {
           try {
             const respuesta = await eliminarCuidador(cuidador.id_cuidador);
@@ -124,7 +199,6 @@
           }
         });
 
-        // Botón editar
         fila.querySelector('.btn-editar').addEventListener('click', () => {
           form.nombre.value = cuidador.nombre;
           form.apellido.value = cuidador.apellido;

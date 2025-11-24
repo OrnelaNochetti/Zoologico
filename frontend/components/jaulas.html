@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Gestión de Jaulas</title>
   <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../jaulas.css">
 </head>
 <body>
   <header>
@@ -11,7 +12,7 @@
     <nav>
       <ul>
         <li><a href="animales.html">Animales</a></li>
-        <li><a href="jaulas.html">Jaulas</a></li>
+        <li><a href="jaulas.html" class="active">Jaulas</a></li>
         <li><a href="cuidadores.html">Cuidadores</a></li>
         <li><a href="responsabilidades.html">Responsabilidades</a></li>
         <li><a href="../index.html">Inicio</a></li>
@@ -20,51 +21,53 @@
   </header>
 
   <main>
-    <!-- Formulario -->
-    <section>
-      <h2>Agregar / Editar Jaula</h2>
-      <form id="form-jaula">
-        <label>Código:</label>
-        <input type="text" name="codigo" required>
+    <div class="contenedor-jaulas">
+      <!-- Formulario -->
+      <section class="tarjeta formulario">
+        <h2>Agregar Jaula</h2>
+        <form id="form-jaula">
+          <label>Código:</label>
+          <input type="text" name="codigo" required>
 
-        <label>Ubicación (Sector):</label>
-        <select name="ubicacion" required>
-          <option value="">-- Selecciona un sector --</option>
-          <option value="Acuático">Acuático</option>
-          <option value="Herbívoro">Herbívoro</option>
-          <option value="Aves">Aves</option>
-          <option value="Reptiles">Reptiles</option>
-          <option value="Mamíferos">Mamíferos</option>
-        </select>
+          <label>Ubicación (Sector):</label>
+          <select name="ubicacion" required>
+            <option value="">-- Selecciona un sector --</option>
+            <option value="Acuático">Acuático</option>
+            <option value="Herbívoro">Herbívoro</option>
+            <option value="Aves">Aves</option>
+            <option value="Reptiles">Reptiles</option>
+            <option value="Mamíferos">Mamíferos</option>
+          </select>
 
-        <label>Capacidad máxima:</label>
-        <input type="number" name="capacidad" required>
+          <label>Capacidad máxima:</label>
+          <input type="number" name="capacidad" required>
 
-        <button type="submit">Guardar</button>
-      </form>
-    </section>
+          <button type="submit">Guardar</button>
+        </form>
+      </section>
 
-    <!-- Tabla CRUD + Alimentación -->
-    <section>
-      <h2>Listado de Jaulas</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Código</th>
-            <th>Ubicación</th>
-            <th>Capacidad</th>
-            <th>Alimentación diaria</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-jaulas"></tbody>
-      </table>
-    </section>
+      <!-- Listado -->
+      <section class="tarjeta listado">
+        <h2>Listado de Jaulas</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Código</th>
+              <th>Ubicación</th>
+              <th>Capacidad</th>
+              <th>Alimentación diaria</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-jaulas"></tbody>
+        </table>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+    <p>&copy;2025 ZoológicoMadagascar</p>
   </footer>
 
   <script type="module">
@@ -73,9 +76,8 @@
 
     const tabla = document.getElementById('tabla-jaulas');
     const form = document.getElementById('form-jaula');
-    let editandoId = null; // 🔑 flag para saber si estamos editando
+    let editandoId = null;
 
-    // Un solo handler para agregar/editar
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
@@ -84,7 +86,7 @@
         if (editandoId) {
           await editarJaula(editandoId, data);
           mostrarMensaje('Jaula editada correctamente', 'success');
-          editandoId = null; // volver a modo agregar
+          editandoId = null;
         } else {
           await agregarJaula(data);
           mostrarMensaje('Jaula agregada correctamente', 'success');
@@ -97,7 +99,6 @@
       }
     });
 
-    // Listar jaulas con botones de eliminar y editar + alimentación diaria
     async function cargarJaulas() {
       tabla.innerHTML = '';
       const jaulas = await getJaulas();
@@ -119,27 +120,22 @@
           </td>
         `;
 
-        // Botón eliminar con validación
         fila.querySelector('.btn-eliminar').addEventListener('click', async () => {
           try {
             const respuesta = await eliminarJaula(jaula.id_jaula);
             mostrarMensaje(respuesta.message || 'Jaula eliminada correctamente', 'success');
             cargarJaulas();
           } catch (error) {
-            mostrarMensaje(
-              error.message || '⚠️ No se puede eliminar: la jaula tiene animales asignados',
-              'error'
-            );
+            mostrarMensaje(error.message || '⚠️ No se puede eliminar: la jaula tiene animales asignados', 'error');
             console.error(error);
           }
         });
 
-        // Botón editar
         fila.querySelector('.btn-editar').addEventListener('click', () => {
           form.codigo.value = jaula.codigo;
-          form.ubicacion.value = jaula.ubicacion; // ✅ carga el sector correcto
+          form.ubicacion.value = jaula.ubicacion;
           form.capacidad.value = jaula.capacidad;
-          editandoId = jaula.id_jaula; // 🔑 activa modo edición
+          editandoId = jaula.id_jaula;
         });
 
         tabla.appendChild(fila);

@@ -1,13 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gestión de Animales</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .contenedor-animales {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      padding: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tarjeta {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .tarjeta h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.5rem;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    form button {
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .info {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1> Gestión de Animales 🐒</h1>
+    <h1>Gestión de Animales 🐒</h1>
     <nav>
       <ul>
         <li><a href="animales.html" class="active">Animales</a></li>
@@ -20,53 +82,54 @@
   </header>
 
   <main>
-    <!-- Listado -->
-    <section>
-      <h2>Listado de Animales</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Especie</th>
-            <th>Edad</th>
-            <th>Sector</th>
-            <th>Jaula</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-animales"></tbody>
-      </table>
-    </section>
+    <div class="contenedor-animales">
+      <!-- Listado -->
+      <section class="tarjeta listado">
+        <h2>Listado de Animales</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Especie</th>
+              <th>Edad</th>
+              <th>Sector</th>
+              <th>Jaula</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-animales"></tbody>
+        </table>
+      </section>
 
-    <!-- Formulario -->
-    <section>
-      <h2>Agregar / Editar Animal</h2>
-      <form id="form-animal">
-        <label>Nombre:</label>
-        <input type="text" name="nombre" required>
+      <!-- Formulario -->
+      <section class="tarjeta formulario">
+        <h2>Agregar Animal</h2>
+        <form id="form-animal">
+          <label>Nombre:</label>
+          <input type="text" name="nombre" required />
 
-        <label>Especie:</label>
-        <input type="text" name="especie" required>
+          <label>Especie:</label>
+          <input type="text" name="especie" required />
 
-        <label>Edad:</label>
-        <input type="number" name="edad" required>
+          <label>Edad:</label>
+          <input type="number" name="edad" required />
 
-        <label>Alimentación diaria (kg):</label>
-        <input type="number" name="alimentacion_diaria" required>
+          <label>Alimentación diaria (kg):</label>
+          <input type="number" name="alimentacion_diaria" required />
 
-        <!-- Select de jaulas + aclaración -->
-        <label>Jaula:</label>
-        <select name="id_jaula" id="id_jaula" required></select>
-        <span id="info-jaula" class="info"></span>
+          <label>Jaula:</label>
+          <select name="id_jaula" id="id_jaula" required></select>
+          <span id="info-jaula" class="info"></span>
 
-        <button type="submit">Guardar</button>
-      </form>
-    </section>
+          <button type="submit">Guardar</button>
+        </form>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+    <p>&copy; 2025 ZoológicoMadagascar</p>
   </footer>
 
   <script type="module">
@@ -80,7 +143,6 @@
     let jaulas = [];
     let editandoId = null;
 
-    // Cargar jaulas en el select
     async function cargarJaulas() {
       jaulas = await getJaulas();
       selectJaula.innerHTML = '';
@@ -92,17 +154,13 @@
       });
     }
 
-    // Mostrar aclaración al costado cuando se selecciona
     selectJaula.addEventListener('change', () => {
       const jaulaSeleccionada = jaulas.find(j => j.id_jaula == selectJaula.value);
-      if (jaulaSeleccionada) {
-        infoJaula.textContent = `Seleccionaste: ${jaulaSeleccionada.codigo} (${jaulaSeleccionada.ubicacion})`;
-      } else {
-        infoJaula.textContent = '';
-      }
+      infoJaula.textContent = jaulaSeleccionada
+        ? `Seleccionaste: ${jaulaSeleccionada.codigo} (${jaulaSeleccionada.ubicacion})`
+        : '';
     });
 
-    // Handler para agregar/editar
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
@@ -124,7 +182,6 @@
       }
     });
 
-    // Listar animales con botones de eliminar y editar
     async function cargarAnimales() {
       tabla.innerHTML = '';
       const animales = await getAnimales();
@@ -144,7 +201,6 @@
           </td>
         `;
 
-        // Botón eliminar
         fila.querySelector('.btn-eliminar').addEventListener('click', async () => {
           try {
             await eliminarAnimal(animal.id_animal);
@@ -156,7 +212,6 @@
           }
         });
 
-        // Botón editar
         fila.querySelector('.btn-editar').addEventListener('click', () => {
           form.nombre.value = animal.nombre;
           form.especie.value = animal.especie;
@@ -165,9 +220,9 @@
           selectJaula.value = animal.id_jaula;
 
           const jaulaSeleccionada = jaulas.find(j => j.id_jaula == animal.id_jaula);
-          if (jaulaSeleccionada) {
-            infoJaula.textContent = `Seleccionaste: ${jaulaSeleccionada.codigo} (${jaulaSeleccionada.ubicacion})`;
-          }
+          infoJaula.textContent = jaulaSeleccionada
+            ? `Seleccionaste: ${jaulaSeleccionada.codigo} (${jaulaSeleccionada.ubicacion})`
+            : '';
 
           editandoId = animal.id_animal;
         });
@@ -176,9 +231,7 @@
       });
     }
 
-    // Inicializar
     cargarJaulas();
     cargarAnimales();
   </script>
 </body>
-</html>

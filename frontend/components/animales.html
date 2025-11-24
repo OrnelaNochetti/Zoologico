@@ -76,6 +76,7 @@
         <li><a href="jaulas.html">Jaulas</a></li>
         <li><a href="cuidadores.html">Cuidadores</a></li>
         <li><a href="responsabilidades.html">Responsabilidades</a></li>
+        <li><a href="alimentacion.html">Alimentación</a></li>
         <li><a href="../index.html">Inicio</a></li>
       </ul>
     </nav>
@@ -93,6 +94,7 @@
               <th>Nombre</th>
               <th>Especie</th>
               <th>Edad</th>
+              <th>Alimentación</th> <!-- ✅ NUEVA COLUMNA -->
               <th>Sector</th>
               <th>Jaula</th>
               <th>Acciones</th>
@@ -193,6 +195,7 @@
           <td>${animal.nombre}</td>
           <td>${animal.especie}</td>
           <td>${animal.edad} años</td>
+          <td>${animal.alimentacion_diaria} kg</td> <!-- ✅ NUEVO -->
           <td>${animal.sector || '-'}</td>
           <td>${animal.id_jaula || '-'}</td>
           <td>

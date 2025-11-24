@@ -28,18 +28,21 @@
 
     <!-- Formulario -->
     <section>
-      <h2>Asignar Responsabilidad</h2>
+      <h2>Agregar / Editar Responsabilidad</h2>
       <form id="form-responsabilidad">
         <label>ID Cuidador:</label>
         <input type="number" name="id_cuidador" required>
 
-        <label>ID Animal:</label>
-        <input type="number" name="id_animal" required>
+        <label>ID Jaula:</label>
+        <input type="number" name="id_jaula" required>
 
-        <label>Descripción:</label>
-        <input type="text" name="descripcion" required>
+        <label>Semana:</label>
+        <input type="number" name="semana" required>
 
-        <button type="submit">Asignar</button>
+        <label>Fecha Asignación:</label>
+        <input type="date" name="fecha_asignacion" required>
+
+        <button type="submit">Guardar</button>
       </form>
     </section>
   </main>
@@ -49,32 +52,65 @@
   </footer>
 
   <script type="module">
-    import { getResponsabilidades, agregarResponsabilidad } from '../utils/api.js';
+    import { getResponsabilidades, agregarResponsabilidad, eliminarResponsabilidad, editarResponsabilidad } from '../utils/api.js';
     import { mostrarMensaje } from '../app.js';
 
     const lista = document.getElementById('lista-responsabilidades');
     const form = document.getElementById('form-responsabilidad');
 
-    // Listar responsabilidades
-    async function cargarResponsabilidades() {
-      lista.innerHTML = '';
-      const responsabilidades = await getResponsabilidades();
-      responsabilidades.forEach(r => {
-        const li = document.createElement('li');
-        li.textContent = `Cuidador #${r.id_cuidador} → Animal #${r.id_animal} | ${r.descripcion}`;
-        lista.appendChild(li);
-      });
-    }
-
-    // Agregar responsabilidad
-    form.addEventListener('submit', async (e) => {
+    // Handler original para agregar responsabilidades
+    const agregarHandler = async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
       await agregarResponsabilidad(data);
-      mostrarMensaje('Responsabilidad asignada correctamente', 'success');
+      mostrarMensaje('Responsabilidad agregada correctamente', 'success');
       form.reset();
       cargarResponsabilidades();
-    });
+    };
+    form.addEventListener('submit', agregarHandler);
+
+    // Listar responsabilidades con botones de eliminar y editar
+    async function cargarResponsabilidades() {
+      lista.innerHTML = '';
+      const responsabilidades = await getResponsabilidades();
+      responsabilidades.forEach(resp => {
+        const li = document.createElement('li');
+        li.textContent = `Responsabilidad #${resp.id_responsabilidad} - Cuidador: ${resp.id_cuidador}, Jaula: ${resp.id_jaula}, Semana: ${resp.semana}, Fecha: ${resp.fecha_asignacion}`;
+
+        // Botón eliminar
+        const btnEliminar = document.createElement('button');
+        btnEliminar.textContent = 'Eliminar';
+        btnEliminar.addEventListener('click', async () => {
+          await eliminarResponsabilidad(resp.id_responsabilidad);
+          mostrarMensaje('Responsabilidad eliminada correctamente', 'success');
+          cargarResponsabilidades();
+        });
+
+        // Botón editar
+        const btnEditar = document.createElement('button');
+        btnEditar.textContent = 'Editar';
+        btnEditar.addEventListener('click', () => {
+          form.id_cuidador.value = resp.id_cuidador;
+          form.id_jaula.value = resp.id_jaula;
+          form.semana.value = resp.semana;
+          form.fecha_asignacion.value = resp.fecha_asignacion;
+
+          form.onsubmit = async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(form));
+            await editarResponsabilidad(resp.id_responsabilidad, data);
+            mostrarMensaje('Responsabilidad editada correctamente', 'success');
+            form.reset();
+            cargarResponsabilidades();
+            form.onsubmit = agregarHandler;
+          };
+        });
+
+        li.appendChild(btnEliminar);
+        li.appendChild(btnEditar);
+        lista.appendChild(li);
+      });
+    }
 
     cargarResponsabilidades();
   </script>

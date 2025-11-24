@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Animales</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <h1>🐾 Gestión de Animales</h1>
+    <nav>
+      <ul>
+        <li><a href="animales.html">Animales</a></li>
+        <li><a href="jaulas.html">Jaulas</a></li>
+        <li><a href="cuidadores.html">Cuidadores</a></li>
+        <li><a href="responsabilidades.html">Responsabilidades</a></li>
+        <li><a href="../index.html">Inicio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Listado -->
+    <section>
+      <h2>Listado de Animales</h2>
+      <ul id="lista-animales"></ul>
+    </section>
+
+    <!-- Formulario -->
+    <section>
+      <h2>Agregar / Editar Animal</h2>
+      <form id="form-animal">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required>
+
+        <label>Especie:</label>
+        <input type="text" name="especie" required>
+
+        <label>Edad:</label>
+        <input type="number" name="edad" required>
+
+        <label>Alimentación diaria (kg):</label>
+        <input type="number" name="alimentacion_diaria" required>
+
+        <label>ID Jaula:</label>
+        <input type="number" name="id_jaula" required>
+
+        <button type="submit">Guardar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Zoológico - Proyecto de Fran</p>
+  </footer>
+
+  <script type="module">
+    import { getAnimales, agregarAnimal, eliminarAnimal, editarAnimal } from '../utils/api.js';
+    import { mostrarMensaje } from '../app.js';
+
+    const lista = document.getElementById('lista-animales');
+    const form = document.getElementById('form-animal');
+
+    // Handler original para agregar animales
+    const agregarHandler = async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      await agregarAnimal(data);
+      mostrarMensaje('Animal agregado correctamente', 'success');
+      form.reset();
+      cargarAnimales();
+    };
+    form.addEventListener('submit', agregarHandler);
+
+    // Listar animales con botones de eliminar y editar
+    async function cargarAnimales() {
+      lista.innerHTML = '';
+      const animales = await getAnimales();
+      animales.forEach(animal => {
+        const li = document.createElement('li');
+        li.textContent = `${animal.nombre} - ${animal.especie} (${animal.edad} años) `;
+
+        // Botón eliminar
+        const btnEliminar = document.createElement('button');
+        btnEliminar.textContent = 'Eliminar';
+        btnEliminar.addEventListener('click', async () => {
+          await eliminarAnimal(animal.id_animal);
+          mostrarMensaje('Animal eliminado correctamente', 'success');
+          cargarAnimales();
+        });
+
+        // Botón editar
+        const btnEditar = document.createElement('button');
+        btnEditar.textContent = 'Editar';
+        btnEditar.addEventListener('click', () => {
+          // Pre-cargar datos en el formulario
+          form.nombre.value = animal.nombre;
+          form.especie.value = animal.especie;
+          form.edad.value = animal.edad;
+          form.alimentacion_diaria.value = animal.alimentacion_diaria;
+          form.id_jaula.value = animal.id_jaula;
+
+          // Cambiar comportamiento del submit para editar
+          form.onsubmit = async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(form));
+            await editarAnimal(animal.id_animal, data);
+            mostrarMensaje('Animal editado correctamente', 'success');
+            form.reset();
+            cargarAnimales();
+            // Restaurar comportamiento original
+            form.onsubmit = agregarHandler;
+          };
+        });
+
+        li.appendChild(btnEliminar);
+        li.appendChild(btnEditar);
+        lista.appendChild(li);
+      });
+    }
+
+    cargarAnimales();
+  </script>
+</body>
+</html>

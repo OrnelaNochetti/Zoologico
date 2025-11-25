@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'pc2025',
+  password: '',
   database: 'zoologico',
   port: 3306,
   connectTimeout: 10000

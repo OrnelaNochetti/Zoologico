@@ -13,7 +13,6 @@ body {
   flex-direction: column;
 }
 
-/* Header */
 header {
   background: #115a3f;
   color: #fff;
@@ -39,7 +38,6 @@ nav a:hover {
   color: #1abc9c;
 }
 
-/* Main */
 main {
   flex: 1;
   position: relative;
@@ -80,7 +78,6 @@ main {
   font-size: 1rem;
 }
 
-/* Footer */
 footer {
   background: #115a3f;
   color: #fff;
@@ -99,37 +96,35 @@ footer {
 
 .tarjeta {
   background: #fff;
-  padding: 1rem;                  /* más compacto que 1.5rem */
+  padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
-  flex: 1;                        /* que se repartan el ancho */
-  max-width: 45%;                 /* cada cuadro ocupa menos de la mitad */
-  min-width: 300px;               /* no se achican demasiado en pantallas chicas */
+  flex: 1;
+  max-width: 45%;
+  min-width: 300px;
 }
 
-/* Títulos dentro de las tarjetas */
 .tarjeta h2 {
   text-align: center;
   color: #2c3e50;
   margin-bottom: 1rem;
-  font-size: 1.2rem;              /* más compacto */
+  font-size: 1.2rem;
 }
 
-/* Tabla del listado */
+
 .listado table {
   width: 100%;
   border-collapse: collapse;
 }
 
 .listado th, .listado td {
-  padding: 0.4rem;                /* menos espacio interno */
+  padding: 0.4rem;
   border-bottom: 1px solid #ccc;
   text-align: left;
-  font-size: 0.9rem;              /* texto más compacto */
+  font-size: 0.9rem;            
 }
 
-/* Formulario */
 .formulario label {
   display: block;
   margin-top: 0.6rem;
@@ -162,7 +157,6 @@ footer {
   background: #16a085;
 }
 
-/* Texto aclaratorio de jaula */
 .info {
   display: block;
   margin-top: 0.3rem;
@@ -170,8 +164,8 @@ footer {
   color: #555;
 }
 .listado {
-  max-height: 400px;     /* 🔧 altura máxima visible */
-  overflow-y: auto;      /* 🔑 activa scroll vertical solo dentro del listado */
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .listado table {
@@ -185,17 +179,16 @@ footer {
   text-align: left;
   font-size: 0.9rem;
 }
-/* Contenedor principal que alinea formulario y listado */
+
 .contenedor-cuidadores {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
   padding: 1rem;
-  flex-wrap: wrap; /* en pantallas chicas se apilan */
+  flex-wrap: wrap;
 }
 
-/* Tarjetas (formulario y listado) */
 .tarjeta {
   background: #fff;
   padding: 1rem;
@@ -203,11 +196,10 @@ footer {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
   flex: 1;
-  max-width: 45%;   /* cada cuadro ocupa menos de la mitad */
-  min-width: 300px; /* no se achican demasiado */
+  max-width: 45%;
+  min-width: 300px;
 }
 
-/* Títulos dentro de las tarjetas */
 .tarjeta h2 {
   text-align: center;
   color: #2c3e50;
@@ -215,10 +207,9 @@ footer {
   font-size: 1.2rem;
 }
 
-/* Tabla con scroll interno */
 .listado {
-  max-height: 400px;   /* altura máxima visible */
-  overflow-y: auto;    /* scroll interno */
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 table {
@@ -233,7 +224,6 @@ th, td {
   font-size: 0.9rem;
 }
 
-/* Formulario */
 .formulario label {
   display: block;
   margin-top: 0.6rem;
@@ -264,17 +254,16 @@ th, td {
 .formulario button:hover {
   background: #16a085;
 }
-/* Contenedor principal que alinea formulario y listado */
+
 .contenedor-cuidadores {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
   padding: 1rem;
-  flex-wrap: wrap; /* en pantallas chicas se apilan */
+  flex-wrap: wrap;
 }
 
-/* Tarjetas (formulario y listado) */
 .tarjeta {
   background: #fff;
   padding: 1rem;
@@ -282,11 +271,10 @@ th, td {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
   flex: 1;
-  max-width: 45%;   /* cada cuadro ocupa menos de la mitad */
-  min-width: 300px; /* no se achican demasiado */
+  max-width: 45%;
+  min-width: 300px;
 }
 
-/* Títulos dentro de las tarjetas */
 .tarjeta h2 {
   text-align: center;
   color: #2c3e50;
@@ -294,10 +282,9 @@ th, td {
   font-size: 1.2rem;
 }
 
-/* Tabla con scroll interno */
 .listado {
-  max-height: 400px;   /* altura máxima visible */
-  overflow-y: auto;    /* scroll interno */
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 table {
@@ -312,7 +299,6 @@ th, td {
   font-size: 0.9rem;
 }
 
-/* Formulario */
 .formulario label {
   display: block;
   margin-top: 0.6rem;
@@ -443,7 +429,6 @@ th, td {
   font-size: 1.2rem;
 }
 
-/* Listado con scroll interno */
 .listado {
   max-height: 400px;
   overflow-y: auto;
@@ -461,7 +446,6 @@ th, td {
   font-size: 0.9rem;
 }
 
-/* Formulario */
 .formulario label {
   display: block;
   margin-top: 0.6rem;
@@ -494,7 +478,7 @@ th, td {
 }
 .contenedor-alimentacion {
   display: flex;
-  justify-content: center; /* centramos la tarjeta */
+  justify-content: center; 
   padding: 1rem;
 }
 
@@ -504,7 +488,7 @@ th, td {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   width: 100%;
-  max-width: 700px; /* ancho máximo */
+  max-width: 700px; 
 }
 
 .tarjeta h2 {
@@ -514,7 +498,7 @@ th, td {
   font-size: 1.2rem;
 }
 
-/* Listado con scroll interno */
+
 .listado {
   max-height: 400px;
   overflow-y: auto;

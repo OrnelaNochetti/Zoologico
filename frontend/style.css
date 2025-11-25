@@ -515,3 +515,51 @@ th, td {
   text-align: left;
   font-size: 0.9rem;
 }
+
+.encabezado-principal {
+    display: flex;
+    align-items: center;
+    /* CLAVE: Distribuye el espacio entre los 3 elementos (Buscador, Título, Spacer) */
+    justify-content: space-between; 
+    padding: 1rem 2rem;
+    /* Nota: Ya tienes un padding de 1rem en el 'header', pero este agrega padding horizontal adicional */
+    flex-wrap: wrap;
+}
+
+/* Contenedor del Buscador (Izquierda) */
+.buscador-header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    /* CLAVE: Define un ancho fijo. El HTML debe usar <div class="header-spacer"> con el mismo ancho. */
+    width: 300px; 
+}
+
+.buscador-header input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    /* Ajusta el ancho para dejar espacio al botón */
+    width: 230px; 
+}
+
+.buscador-header button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+/* Título (Centrado) */
+.encabezado-principal h1 {
+    /* CLAVE: Asegura que el título ocupe el espacio central restante */
+    flex-grow: 1; 
+    text-align: center; /* Centra el texto dentro del H1 */
+    margin: 0; /* Anula cualquier margen que pueda interferir con el centrado */
+    font-size: 2rem;
+    color: #2c3e50;
+}
+
+/* Elemento de Relleno (Spacer) - Debe agregarse al HTML */
+.header-spacer {
+    /* CLAVE: Mismo ancho exacto que .buscador-header para forzar el centrado del h1 */
+    width: 300px; 
+    height: 1px; /* Prácticamente invisible, solo ocupa el espacio */
+}

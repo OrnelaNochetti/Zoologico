@@ -1,308 +1,419 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8" />
+
   <title>Gestión de Animales</title>
-  <link rel="stylesheet" href="../style.css" />
-  <style>
-    .contenedor-animales {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 2rem;
-      padding: 2rem;
-      flex-wrap: wrap;
-    }
 
-    /* tus estilos anteriores... */
+    <link rel="stylesheet" href="../style.css" />
 
-    .encabezado-principal {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem 2rem;
-      flex-wrap: wrap;
-    }
+  </head>
 
-    .buscador-header {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .buscador-header input {
-      padding: 0.5rem;
-      font-size: 1rem;
-      width: 200px;
-    }
-
-    .buscador-header button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-    }
-
-    .encabezado-principal h1 {
-      margin: 0;
-      font-size: 2rem;
-      color: #2c3e50;
-    }
-
-    .tarjeta {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 600px;
-    }
-
-    .tarjeta h2 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 1rem;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 0.5rem;
-      border-bottom: 1px solid #ccc;
-      text-align: left;
-    }
-
-    form label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-
-    form input, form select {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    form button {
-      margin-top: 1rem;
-      width: 100%;
-    }
-
-    .info {
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-      color: #555;
-    }
-  </style>
-</head>
 <body>
+
   <header>
+
   <div class="encabezado-principal">
-    <!-- Buscador a la izquierda -->
-    <div class="buscador-header">
+
+        <div class="buscador-header">
+
       <input type="text" id="buscador" placeholder="Buscar animal...">
+
       <button id="btnBuscar">🔍</button>
+
     </div>
 
-    <!-- Título centrado -->
-    <h1 class="titulo-principal">Gestión de Animales 🐒</h1>
+
+
+        <h1 class="titulo-principal">Gestión de Animales 🐒</h1>
+
+    
+
+        <div class="header-spacer"></div>
+
   </div>
 
-  <!-- Barra de navegación -->
-  <nav>
+
+
+    <nav>
+
     <ul>
+
       <li><a href="animales.html" class="active">Animales</a></li>
+
       <li><a href="jaulas.html">Jaulas</a></li>
+
       <li><a href="cuidadores.html">Cuidadores</a></li>
+
       <li><a href="responsabilidades.html">Responsabilidades</a></li>
+
       <li><a href="alimentacion.html">Alimentación</a></li>
+
       <li><a href="../index.html">Inicio</a></li>
+
     </ul>
+
   </nav>
+
 </header>
 
+
+
   <main>
+
     <div class="contenedor-animales">
-      <!-- Listado -->
-      <section class="tarjeta listado">
+
+            <section class="tarjeta listado">
+
         <h2>Listado de Animales</h2>
+
         <table>
+
           <thead>
+
             <tr>
+
               <th>ID</th>
+
               <th>Nombre</th>
+
               <th>Especie</th>
+
               <th>Edad</th>
-              <th>Alimentación</th> <!-- ✅ NUEVA COLUMNA -->
+
+              <th>Alimentación</th>
+
               <th>Sector</th>
+
               <th>Jaula</th>
+
               <th>Acciones</th>
+
             </tr>
+
           </thead>
+
           <tbody id="tabla-animales"></tbody>
+
         </table>
+
       </section>
 
-      <!-- Formulario -->
-      <section class="tarjeta formulario">
+
+
+            <section class="tarjeta formulario">
+
         <h2>Agregar Animal</h2>
+
         <form id="form-animal">
+
           <label>Nombre:</label>
+
           <input type="text" name="nombre" required />
 
+
+
           <label>Especie:</label>
+
           <input type="text" name="especie" required />
 
+
+
           <label>Edad:</label>
+
           <input type="number" name="edad" required />
 
+
+
           <label>Alimentación diaria (kg):</label>
+
           <input type="number" name="alimentacion_diaria" step="0.01" required>
 
+
+
           <label>Jaula:</label>
+
           <select name="id_jaula" id="id_jaula" required></select>
+
           <span id="info-jaula" class="info"></span>
 
+
+
           <button type="submit">Guardar</button>
+
         </form>
+
       </section>
+
     </div>
+
   </main>
 
+
+
   <footer>
+
     <p>&copy; 2025 ZoológicoMadagascar</p>
+
   </footer>
 
+
+
     <script type="module">
+
     import { getAnimales, agregarAnimal, eliminarAnimal, editarAnimal, getJaulas } from '../utils/api.js';
+
     import { mostrarMensaje } from '../app.js';
 
+
+
     const tabla = document.getElementById('tabla-animales');
+
     const form = document.getElementById('form-animal');
+
     const selectJaula = document.getElementById('id_jaula');
+
     const infoJaula = document.getElementById('info-jaula');
+
     const buscadorInput = document.getElementById('buscador');
+
     const btnBuscar = document.getElementById('btnBuscar');
 
+
+
     let jaulas = [];
+
     let editandoId = null;
+
     let animalesCache = [];
 
+
+
     // --- JAULAS ---
+
     async function cargarJaulas() {
+
       jaulas = await getJaulas();
+
       selectJaula.innerHTML = '';
+
       jaulas.forEach(j => {
+
         const option = document.createElement('option');
+
         option.value = j.id_jaula;
+
         option.textContent = `${j.codigo} - ${j.ubicacion}`;
+
         selectJaula.appendChild(option);
+
       });
+
     }
+
+
 
     selectJaula.addEventListener('change', () => {
+
       const jaulaSeleccionada = jaulas.find(j => j.id_jaula == selectJaula.value);
+
       infoJaula.textContent = jaulaSeleccionada
+
         ? `Seleccionaste: ${jaulaSeleccionada.codigo} (${jaulaSeleccionada.ubicacion})`
+
         : '';
+
     });
+
+
 
     // --- FORMULARIO ---
+
     form.addEventListener('submit', async (e) => {
+
       e.preventDefault();
+
       const data = Object.fromEntries(new FormData(form));
 
+
+
       try {
+
         if (editandoId) {
+
           await editarAnimal(editandoId, data);
+
           mostrarMensaje('Animal editado correctamente', 'success');
+
           editandoId = null;
+
         } else {
+
           await agregarAnimal(data);
+
           mostrarMensaje('Animal agregado correctamente', 'success');
+
         }
+
         form.reset();
+
         cargarAnimales();
+
       } catch (error) {
+
         mostrarMensaje('Error al guardar animal', 'error');
+
         console.error(error);
+
       }
+
     });
 
+
+
     // --- LISTADO ---
+
     async function cargarAnimales() {
+
       animalesCache = await getAnimales();
+
       renderAnimales(animalesCache);
+
     }
+
+
 
     function renderAnimales(animales) {
+
       tabla.innerHTML = '';
+
       animales.forEach(animal => {
+
         const fila = document.createElement('tr');
+
         fila.innerHTML = `
+
           <td>${animal.id_animal}</td>
+
           <td>${animal.nombre}</td>
+
           <td>${animal.especie}</td>
+
           <td>${animal.edad} años</td>
+
           <td>${animal.alimentacion_diaria} kg</td>
+
           <td>${animal.sector || '-'}</td>
+
           <td>${animal.id_jaula || '-'}</td>
+
           <td>
+
             <button class="btn-eliminar">Eliminar</button>
+
             <button class="btn-editar">Editar</button>
+
           </td>
+
         `;
 
+
+
         fila.querySelector('.btn-eliminar').addEventListener('click', async () => {
+
           try {
+
             await eliminarAnimal(animal.id_animal);
+
             mostrarMensaje('Animal eliminado correctamente', 'success');
+
             cargarAnimales();
+
           } catch (error) {
+
             mostrarMensaje('⚠️ No se puede eliminar el animal', 'error');
+
             console.error(error);
+
           }
+
         });
+
+
 
         fila.querySelector('.btn-editar').addEventListener('click', () => {
+
           form.nombre.value = animal.nombre;
+
           form.especie.value = animal.especie;
+
           form.edad.value = animal.edad;
+
           form.alimentacion_diaria.value = animal.alimentacion_diaria;
+
           selectJaula.value = animal.id_jaula;
 
+
+
           const jaulaSeleccionada = jaulas.find(j => j.id_jaula == animal.id_jaula);
+
           infoJaula.textContent = jaulaSeleccionada
+
             ? `Seleccionaste: ${jaulaSeleccionada.codigo} (${jaulaSeleccionada.ubicacion})`
+
             : '';
 
+
+
           editandoId = animal.id_animal;
+
         });
 
+
+
         tabla.appendChild(fila);
+
       });
+
     }
+
+
 
     // --- BUSCADOR ---
+
     function filtrarAnimales() {
+
       const filtro = buscadorInput.value.toLowerCase();
+
       const filtrados = animalesCache.filter(a =>
+
         a.nombre.toLowerCase().includes(filtro)
+
       );
+
       renderAnimales(filtro === "" ? animalesCache : filtrados);
+
     }
 
+
+
     buscadorInput.addEventListener('keyup', filtrarAnimales);
+
     btnBuscar.addEventListener('click', filtrarAnimales);
 
+
+
     // --- INICIO ---
+
     cargarJaulas();
+
     cargarAnimales();
+
   </script>
+
 </body>
+
 </html>

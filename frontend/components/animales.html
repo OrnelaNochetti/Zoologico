@@ -14,6 +14,39 @@
       flex-wrap: wrap;
     }
 
+    /* tus estilos anteriores... */
+
+    .encabezado-principal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .buscador-header {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .buscador-header input {
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 200px;
+    }
+
+    .buscador-header button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+
+    .encabezado-principal h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #2c3e50;
+    }
+
     .tarjeta {
       background: #fff;
       padding: 1.5rem;
@@ -69,21 +102,33 @@
 </head>
 <body>
   <header>
-    <h1>Gestión de Animales 🐒</h1>
-    <nav>
-      <ul>
-        <li><a href="animales.html" class="active">Animales</a></li>
-        <li><a href="jaulas.html">Jaulas</a></li>
-        <li><a href="cuidadores.html">Cuidadores</a></li>
-        <li><a href="responsabilidades.html">Responsabilidades</a></li>
-        <li><a href="alimentacion.html">Alimentación</a></li>
-        <li><a href="../index.html">Inicio</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="encabezado-principal">
+    <!-- Buscador a la izquierda -->
+    <div class="buscador-header">
+      <input type="text" id="buscador" placeholder="Buscar animal...">
+      <button id="btnBuscar">🔍</button>
+    </div>
+
+    <!-- Título centrado -->
+    <h1 class="titulo-principal">Gestión de Animales 🐒</h1>
+  </div>
+
+  <!-- Barra de navegación -->
+  <nav>
+    <ul>
+      <li><a href="animales.html" class="active">Animales</a></li>
+      <li><a href="jaulas.html">Jaulas</a></li>
+      <li><a href="cuidadores.html">Cuidadores</a></li>
+      <li><a href="responsabilidades.html">Responsabilidades</a></li>
+      <li><a href="alimentacion.html">Alimentación</a></li>
+      <li><a href="../index.html">Inicio</a></li>
+    </ul>
+  </nav>
+</header>
 
   <main>
     <div class="contenedor-animales">
+      <!-- Listado -->
       <section class="tarjeta listado">
         <h2>Listado de Animales</h2>
         <table>
@@ -93,7 +138,7 @@
               <th>Nombre</th>
               <th>Especie</th>
               <th>Edad</th>
-              <th>Alimentación</th>
+              <th>Alimentación</th> <!-- ✅ NUEVA COLUMNA -->
               <th>Sector</th>
               <th>Jaula</th>
               <th>Acciones</th>
@@ -103,6 +148,7 @@
         </table>
       </section>
 
+      <!-- Formulario -->
       <section class="tarjeta formulario">
         <h2>Agregar Animal</h2>
         <form id="form-animal">
@@ -132,7 +178,7 @@
     <p>&copy; 2025 ZoológicoMadagascar</p>
   </footer>
 
-  <script type="module">
+    <script type="module">
     import { getAnimales, agregarAnimal, eliminarAnimal, editarAnimal, getJaulas } from '../utils/api.js';
     import { mostrarMensaje } from '../app.js';
 
@@ -140,9 +186,14 @@
     const form = document.getElementById('form-animal');
     const selectJaula = document.getElementById('id_jaula');
     const infoJaula = document.getElementById('info-jaula');
+    const buscadorInput = document.getElementById('buscador');
+    const btnBuscar = document.getElementById('btnBuscar');
+
     let jaulas = [];
     let editandoId = null;
+    let animalesCache = [];
 
+    // --- JAULAS ---
     async function cargarJaulas() {
       jaulas = await getJaulas();
       selectJaula.innerHTML = '';
@@ -161,6 +212,7 @@
         : '';
     });
 
+    // --- FORMULARIO ---
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form));
@@ -182,10 +234,14 @@
       }
     });
 
+    // --- LISTADO ---
     async function cargarAnimales() {
-      tabla.innerHTML = '';
-      const animales = await getAnimales();
+      animalesCache = await getAnimales();
+      renderAnimales(animalesCache);
+    }
 
+    function renderAnimales(animales) {
+      tabla.innerHTML = '';
       animales.forEach(animal => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
@@ -193,7 +249,7 @@
           <td>${animal.nombre}</td>
           <td>${animal.especie}</td>
           <td>${animal.edad} años</td>
-          <td>${animal.alimentacion_diaria} kg</td> <!-- ✅ NUEVO -->
+          <td>${animal.alimentacion_diaria} kg</td>
           <td>${animal.sector || '-'}</td>
           <td>${animal.id_jaula || '-'}</td>
           <td>
@@ -232,7 +288,21 @@
       });
     }
 
+    // --- BUSCADOR ---
+    function filtrarAnimales() {
+      const filtro = buscadorInput.value.toLowerCase();
+      const filtrados = animalesCache.filter(a =>
+        a.nombre.toLowerCase().includes(filtro)
+      );
+      renderAnimales(filtro === "" ? animalesCache : filtrados);
+    }
+
+    buscadorInput.addEventListener('keyup', filtrarAnimales);
+    btnBuscar.addEventListener('click', filtrarAnimales);
+
+    // --- INICIO ---
     cargarJaulas();
     cargarAnimales();
   </script>
 </body>
+</html>

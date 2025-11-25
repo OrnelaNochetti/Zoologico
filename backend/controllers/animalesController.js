@@ -33,7 +33,7 @@ exports.eliminar = (req, res) => {
 };
 
 exports.buscar = (req, res) => {
-  const { nombre } = req.params;
+  const { nombre } = req.query;
   animalesModel.buscar(nombre, (err, results) => {
     if (err) return res.status(500).send(err);
     res.json(results);

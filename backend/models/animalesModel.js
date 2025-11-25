@@ -48,7 +48,14 @@ const animalesModel = {
       LEFT JOIN jaulas j ON a.id_jaula = j.id_jaula
       WHERE a.nombre LIKE ?
     `;
-    db.query(sql, [`%${nombre}%`], (err, results) => {
+       let params = [];
+
+    if (nombre && nombre.trim() !== '') {
+      sql += ' WHERE a.nombre LIKE ?';
+      params.push(`%${nombre}%`);
+    }
+
+    db.query(sql, params, (err, results) => {
       if (err) return callback(err);
       callback(null, results);
     });
